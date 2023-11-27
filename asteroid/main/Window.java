@@ -60,8 +60,9 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
         graficos = bs.getDrawGraphics();//ahora puedo dibujar en el buffer
         //---------inicio dibujo-----
         graficos.clearRect(0, 0, ANCHO, ALTO);//limpia la ventana 
-        graficos.drawRect(x, 0, 100, 100);//dibuja un cuadrado x e y son la posicion donde se encuentra la el objeto
-
+        //graficos.drawRect(x, 0, 100, 100);//dibuja un cuadrado x e y son la posicion donde se encuentra la el objeto
+        graficos.setColor(Color.BLACK);
+        graficos.drawString("" + mostrarFPS , 10, 10);
 
         //---------fin dibujo-------
         graficos.dispose();//libero los recursos de graficos
@@ -73,16 +74,29 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
 
         long ahora = 0;//registra el tiempo que va pasando
         long ultimoTiempo = System.nanoTime();//almacena el tiempo que paso en nanosegundos
-
+        long fotogramas = 0;
+        long tiempo = 0;
 
         while(corriendo){//se encarga de actualizar la posicion de todos los 
         
             ahora = System.nanoTime();
-            delta += (ahora - ultimoTiempo) / 
+            delta += (ahora - ultimoTiempo) / TIEMPOFPS;
+            ultimoTiempo = ahora;
+
+            if(delta >= 1){//si se culple la condicion muestro un fotograma
+                //objetos del juego para despues dibujarlos en pantalla
+                actualizar();
+                dibujar();
+                delta--;//redusco delta para reiniciciar el cronometrage del siguiente fotograma
+                fotogramas++;//aumento la cantidad de fotogramas
+            }
+            if(tiempo >= 1000000000){
+                mostrarFPS = fotogramas;
+                fotogramas = 0;//los igualo a 0 para volver a contarlos en el proximo sgundo
+                tiempo = 0;//reinicio el tiempo para volver a medir el segundo
+            }
         
-            //objetos del juego para despues dibujarlos en pantalla
-           // actualizar();
-            //dibujar();
+            
         }
 
         stop();
