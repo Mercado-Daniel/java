@@ -1,5 +1,8 @@
 package main;
 import javax.swing.*;
+
+import graficos.Assets;
+
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 
@@ -45,9 +48,9 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
     public static void main(String[] args) {
         new Window().start();
     }
-    int x = 0;
+
     private void actualizar(){//se encarga de actualizar la pantalla
-        x++;
+    
     }
 
     private void dibujar(){//se encarga de dibujar en la ventana
@@ -68,7 +71,9 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
         graficos.dispose();//libero los recursos de graficos
         bs.show();//muestro en pantalla lo dibujado en el buffer
     }
-
+    private void iniciar(){
+        Assets.iniciar();
+    }
     @Override
     public void run(){
 
@@ -76,6 +81,8 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
         long ultimoTiempo = System.nanoTime();//almacena el tiempo que paso en nanosegundos
         long fotogramas = 0;
         long tiempo = 0;
+
+        iniciar();//inicia el png
 
         while(corriendo){//se encarga de actualizar la posicion de todos los 
         
