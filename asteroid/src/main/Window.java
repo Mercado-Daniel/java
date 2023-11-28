@@ -1,7 +1,9 @@
 package main;
 import javax.swing.*;
 
+import estados.EstadoDeJuego;
 import graficos.Assets;
+import estados.EstadoDeJuego;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
@@ -24,7 +26,8 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
     private double TIEMPOFPS = 1000000000/FPS;//1 segundo en nanosegundos dividido la cantidad de fps objetivo  para aumentar la precision
     private double delta = 0; //delta es el cambio respecto al tiempo y se encarga de almacenar el tiempo transcurrido
     private double mostrarFPS = FPS;//se encarga de almacenar para mostrar los fps reales
-
+    
+    private EstadoDeJuego estadoDeJuego;
 
     public Window(){//creo el constructor de la ventana
         setTitle("Space Ship Game");
@@ -50,7 +53,7 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
     }
 
     private void actualizar(){//se encarga de actualizar la pantalla
-    
+        estadoDeJuego.actualizar(); //actualizo el estado de juego a traves de su metodo
     }
 
     private void dibujar(){//se encarga de dibujar en la ventana
@@ -62,9 +65,13 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
         }
         graficos = bs.getDrawGraphics();//ahora puedo dibujar en el buffer
         //---------inicio dibujo-----
-        graficos.clearRect(0, 0, ANCHO, ALTO);//limpia la ventana 
+        graficos.setColor(Color.BLACK);//pinta la ventana
+        graficos.fillRect(0, 0, ANCHO, ALTO);
+        //graficos.clearRect(0, 0, ANCHO, ALTO);//limpia la ventana 
         //graficos.drawRect(x, 0, 100, 100);//dibuja un cuadrado x e y son la posicion donde se encuentra la el objeto
-        graficos.setColor(Color.BLACK);
+        //graficos.drawImage(Assets.jugador, 100, 100, null);
+        //graficos.setColor(Color.white);//pinta el visor de fps
+        estadoDeJuego.dibujar(graficos);
         graficos.drawString("" + mostrarFPS , 10, 10);
 
         //---------fin dibujo-------
@@ -73,6 +80,7 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
     }
     private void iniciar(){
         Assets.iniciar();
+        estadoDeJuego = new EstadoDeJuego();//instancio estado de juego
     }
     @Override
     public void run(){

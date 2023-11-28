@@ -7,6 +7,6 @@ public class Assets {
     public static BufferedImage jugador;//almacena la imagen del jugador
 
     public static void iniciar(){
-        jugador = CargaImgSon.cargarImagen("/naves/player.png");//paso la direccion de la imagen
+        jugador = GraficosRen.cargarImagen("/naves/player.png");//paso la direccion de la imagen
     }
 }

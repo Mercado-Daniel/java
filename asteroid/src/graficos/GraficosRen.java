@@ -5,10 +5,10 @@ import java.io.IOException;
 
 import javax.imageio.*;
 
-public class CargaImgSon {
+public class GraficosRen {
     public static BufferedImage cargarImagen(String path){//recibe una direccion de imagen
         try {
-            return ImageIO.read(CargaImgSon.class.getResource(path));//devuelve la imagen de la direccion
+            return ImageIO.read(GraficosRen.class.getResource(path));//devuelve la imagen de la direccion
             
         } catch (IOException e) {//en caaso de error lo imprime
             e.printStackTrace();
