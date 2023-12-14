@@ -14,6 +14,6 @@ public class EstadoDeJuego {
     }
 
     public void dibujar(Graphics graficos) {//recibe un objeto graficos y lo dibuja en el buffer
-
+        
     }
 }
