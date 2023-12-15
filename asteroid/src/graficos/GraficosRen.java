@@ -8,6 +8,7 @@ import javax.imageio.*;
 public class GraficosRen {
     public static BufferedImage cargarImagen(String path){//recibe una direccion de imagen
         try {
+            System.out.println(path);
             return ImageIO.read(GraficosRen.class.getResource(path));//devuelve la imagen de la direccion
             
         } catch (IOException e) {//en caaso de error lo imprime

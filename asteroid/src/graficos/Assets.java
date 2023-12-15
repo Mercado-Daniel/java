@@ -8,5 +8,6 @@ public class Assets {
 
     public static void iniciar(){
         jugador = GraficosRen.cargarImagen("/naves/player.png");//paso la direccion de la imagen
+        System.out.println("hola");
     }
 }
