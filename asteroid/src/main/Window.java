@@ -1,6 +1,7 @@
 package main;
 import javax.swing.*;
 
+import entrada.Teclado;
 import estados.EstadoDeJuego;
 import graficos.Assets;
 
@@ -29,6 +30,9 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
     
     private EstadoDeJuego estadoDeJuego;
 
+    //teclado
+    private Teclado teclado;
+
     public Window(){//creo el constructor de la ventana
         setTitle("Space Ship Game");
         setSize(ANCHO, ALTO);
@@ -38,6 +42,7 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
 
         setVisible(true);
         //creamos el canvas 
+        teclado = new Teclado();
         canvas = new Canvas();
         canvas.setPreferredSize(new Dimension(ANCHO, ALTO));
         canvas.setMaximumSize(new Dimension(ANCHO, ALTO));
@@ -45,7 +50,7 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
         canvas.setFocusable(true);//permite obtner entradas desde el teclado
         
         add(canvas);//agregamos el canvas a la ventana
-
+        canvas.addKeyListener(teclado);//añado el teclado al lienzo
     }
 
     public static void main(String[] args) {
@@ -53,6 +58,7 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
     }
 
     private void actualizar(){//se encarga de actualizar la pantalla
+        teclado.actualizar();//actualiza la tecla presionada antes de que se renderize
         estadoDeJuego.actualizar(); //actualizo el estado de juego a traves de su metodo
     }
 
