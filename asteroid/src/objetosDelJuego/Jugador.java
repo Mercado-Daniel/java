@@ -12,10 +12,13 @@ import mat.Vector2D;
 public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
     
     private Vector2D puntaNave;//es hacia donde esta mirando la nave
+    private Vector2D aceleracion;//es el cambio en la velocidad con respecto al tiempo
+    private final double ACC = 0.08;
 
     public Jugador(Vector2D posicion,Vector2D velocidad ,BufferedImage textura){
         super(posicion, velocidad, textura);
         puntaNave = new Vector2D(0, 1);
+        aceleracion = new Vector2D();//incializo la aceleracion de la nave
     }
 
     @Override//el que borra el override 
@@ -32,10 +35,20 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         if(Teclado.IZQUIERDA){
             angulo -= Math.PI/20;
         }
+        if(Teclado.ARRIBA){
+            aceleracion = puntaNave.mulPorEscalar(ACC);//multiplico la punta de la nave
+            //por el macro acc que es la tasa de incremento de la aceleracion para mover la 
+            //nave
+        }
+
+        velocidad = velocidad.suma(aceleracion);//es la velocidad con la que la nave
+        //se mueve hacia donde apunta la nave
 
 
         puntaNave = puntaNave.setDireccion(angulo - (Math.PI/2));//la hubicaion inicial de la punta de la nave
         //es 90° funciona en radianes
+
+        posicion = posicion.suma(velocidad);
 
     }
 

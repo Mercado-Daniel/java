@@ -13,6 +13,14 @@ public class Vector2D{
         y = 0;
     }
 
+    public Vector2D suma(Vector2D v){//suma dos vectores
+        return new Vector2D(x + v.getX(), y + getY());
+    }
+
+    public Vector2D mulPorEscalar(double escalar){//multiplica un vector por un escalar
+        return new Vector2D(x * escalar, y * escalar);
+    }
+
     public double getMagnitud(){
         return Math.sqrt(x*x + y*y);
     }
