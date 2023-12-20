@@ -13,7 +13,8 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
     
     private Vector2D puntaNave;//es hacia donde esta mirando la nave
     private Vector2D aceleracion;//es el cambio en la velocidad con respecto al tiempo
-    private final double ACC = 0.02;
+    private final double ACC = 0.2;
+    
 
     public Jugador(Vector2D posicion,Vector2D velocidad , double velocidadMaxima,BufferedImage textura){
         super(posicion, velocidad, velocidadMaxima,textura);
@@ -40,7 +41,12 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         //por el macro acc que es la tasa de incremento de la aceleracion para mover la 
         //nave
         }else{
-            
+            if (velocidad.getMagnitud() != 0) {
+                aceleracion = (velocidad.mulPorEscalar(-1).normalizar()).mulPorEscalar(ACC);
+                //de esta forma me encargo de desacelerar la nave por medio de 
+                //cambiar la direccion del vector velocidad normalizado y multiplicarlo 
+                //por la aceleracion
+            }
         }
 
         velocidad = velocidad.suma(aceleracion);//es la velocidad con la que la nave

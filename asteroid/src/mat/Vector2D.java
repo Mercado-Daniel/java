@@ -37,6 +37,10 @@ public class Vector2D{
         }
     }
 
+    public Vector2D normalizar(){ //devuelve un vector normalizado
+        return new Vector2D(x / getMagnitud(), y / getMagnitud());//divide cada componente entre su magnitud
+    }
+
     public double getMagnitud(){
         return Math.sqrt(x*x + y*y);
     }
