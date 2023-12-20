@@ -14,11 +14,27 @@ public class Vector2D{
     }
 
     public Vector2D suma(Vector2D v){//suma dos vectores
-        return new Vector2D(x + v.getX(), y + getY());
+        return new Vector2D(x + v.getX(), y + v.getY());
     }
 
     public Vector2D mulPorEscalar(double escalar){//multiplica un vector por un escalar
-        return new Vector2D(x * escalar, y * escalar);
+         return new Vector2D(x * escalar, y * escalar);
+    }
+
+    public void limite(double valor){
+        if(x > valor){
+            x = valor;
+        }
+        if(x < -valor){
+            x = -valor;
+        }
+
+        if(y > valor){
+            y = valor;
+        }
+        if(y < -valor){
+            y = -valor;
+        }
     }
 
     public double getMagnitud(){
