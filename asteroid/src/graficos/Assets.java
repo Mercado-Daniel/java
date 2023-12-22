@@ -16,7 +16,7 @@ public class Assets {
         jugador = GraficosRen.cargarImagen("/naves/player.png");//paso la direccion de la imagen
         velocidad = GraficosRen.cargarImagen("/efectos/fire08.png");
         laserAzul = GraficosRen.cargarImagen("/lasers/laserBlue01.png");
-        laserVerde = GraficosRen.cargarImagen("/lasers/lasereGreen11.png");
+        laserVerde = GraficosRen.cargarImagen("/lasers/laserGreen11.png");
         laserRojo = GraficosRen.cargarImagen("/lasers/laserRed01.png");
     }
 }

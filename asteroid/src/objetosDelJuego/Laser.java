@@ -25,8 +25,8 @@ public class Laser extends ObjetoMoviendose {
     public void dibujar(Graphics graficos){
         Graphics2D graficos2D = (Graphics2D)graficos;
         
-        at = AffineTransform.getTranslateInstance(posicion.getX(), posicion.getY());
-        at.rotate(angulo);
+        at = AffineTransform.getTranslateInstance(posicion.getX() - ancho/2, posicion.getY());
+        at.rotate(angulo, ancho/2, 0);
 
         graficos2D.drawImage(textura, at, null);
 

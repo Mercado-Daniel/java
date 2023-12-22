@@ -42,7 +42,7 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         if(Teclado.DISPARAR){//crea un laser que se añade al arraylist que se origina el 
             //centro de la nave
             estadoDeJuego.getObjetosQueSeMueven().add(new Laser(
-                getCentro().suma(puntaNave.mulPorEscalar(alto/2)),
+                getCentro().suma(puntaNave.mulPorEscalar(ancho/2)),
                 puntaNave, 
                 10,
                 angulo,
