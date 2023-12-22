@@ -21,6 +21,10 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
 
     //para que la clase jugador pueda tener acceso al arrayList de objetosMoviendose
     private EstadoDeJuego estadoDeJuego;
+
+    //para limitar la cantidad de tiros por segundo
+    private long tiempo = 0;
+    private long tiempoActual = System.currentTimeMillis();
     
 
     public Jugador(Vector2D posicion,Vector2D velocidad , double velocidadMaxima,BufferedImage textura, EstadoDeJuego estadoDeJuego){
@@ -38,15 +42,19 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         if(Teclado.IZQUIERDA){
             posicion.setX(posicion.getX() - 1);//muevo uno a la derecha el jugador 
         }*/
+        tiempo += System.currentTimeMillis() - tiempoActual;
+        tiempoActual = System.currentTimeMillis();
 
-        if(Teclado.DISPARAR){//crea un laser que se añade al arraylist que se origina el 
+        if(Teclado.DISPARAR && tiempo > 200){//crea un laser que se añade al arraylist que se origina el 
             //centro de la nave
-            estadoDeJuego.getObjetosQueSeMueven().add(new Laser(
-                getCentro().suma(puntaNave.mulPorEscalar(ancho/2)),
+            estadoDeJuego.getObjetosQueSeMueven().add(0, new Laser(
+                getCentro().suma(puntaNave.mulPorEscalar(ancho)),
                 puntaNave, 
                 10,
                 angulo,
                 Assets.laserRojo));
+
+            tiempo = 0;
         }
 
         if(Teclado.DERECHA){
