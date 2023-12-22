@@ -13,7 +13,7 @@ public class EstadoDeJuego {
 
     public EstadoDeJuego() {
         //jugador = new Jugador(new Vector2D(100, 500), Assets.jugador);      
-        jugador = new Jugador(new Vector2D(400, 300), new Vector2D(), 3, Assets.jugador);  
+        jugador = new Jugador(new Vector2D(400, 300), new Vector2D(), 5, Assets.jugador);  
     }
 
     public void actualizar() {

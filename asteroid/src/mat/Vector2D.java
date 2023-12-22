@@ -21,20 +21,12 @@ public class Vector2D{
          return new Vector2D(x * escalar, y * escalar);
     }
 
-    public void limite(double valor){
-        if(x > valor){
-            x = valor;
+    public Vector2D limite(double valor){//hay que normalizar el vector para que este no pierda su velocidad
+        if (getMagnitud() > valor) {
+            
+            return this.normalizar().mulPorEscalar(valor);
         }
-        if(x < -valor){
-            x = -valor;
-        }
-
-        if(y > valor){
-            y = valor;
-        }
-        if(y < -valor){
-            y = -valor;
-        }
+        return this;
     }
 
     public Vector2D normalizar(){ //devuelve un vector normalizado
