@@ -5,18 +5,20 @@ import java.awt.event.KeyListener;
 
 public class Teclado implements KeyListener {//implemento la clase keylister para poder escuchar las teclas presionadas
     private boolean[] teclas = new boolean[256];
-    public static boolean ARRIBA, IZQUIERDA, DERECHA;//son los tres tipos de teclas a usar
+    public static boolean ARRIBA, IZQUIERDA, DERECHA, DISPARAR;//son los tres tipos de teclas a usar
 
     public Teclado(){
         ARRIBA = false;//las teclas inician en flase
         IZQUIERDA = false;
         DERECHA = false;
+        DISPARAR = false;
     }
 
     public void actualizar(){
         ARRIBA = teclas[KeyEvent.VK_W] || teclas[KeyEvent.VK_UP];
         IZQUIERDA = teclas[KeyEvent.VK_A] || teclas[KeyEvent.VK_LEFT];
         DERECHA = teclas[KeyEvent.VK_D] || teclas[KeyEvent.VK_RIGHT];
+        DISPARAR = teclas[KeyEvent.VK_J] || teclas[KeyEvent.VK_Z];
     }
 
     

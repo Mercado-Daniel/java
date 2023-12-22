@@ -7,6 +7,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import entrada.Teclado;
+import estados.EstadoDeJuego;
 import graficos.Assets;
 import mat.Vector2D;
 import main.Window;//tener cuidado ya que awt tiene tambien window y este hace referencia al objeto mismo (jugador)
@@ -17,10 +18,14 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
     private Vector2D aceleracion;//es el cambio en la velocidad con respecto al tiempo
     private final double ACC = 0.2;
     private boolean acelerando = false;
+
+    //para que la clase jugador pueda tener acceso al arrayList de objetosMoviendose
+    private EstadoDeJuego estadoDeJuego;
     
 
-    public Jugador(Vector2D posicion,Vector2D velocidad , double velocidadMaxima,BufferedImage textura){
+    public Jugador(Vector2D posicion,Vector2D velocidad , double velocidadMaxima,BufferedImage textura, EstadoDeJuego estadoDeJuego){
         super(posicion, velocidad, velocidadMaxima,textura);
+        this.estadoDeJuego = estadoDeJuego;
         puntaNave = new Vector2D(0, 1);
         aceleracion = new Vector2D();//incializo la aceleracion de la nave
     }
@@ -33,6 +38,17 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         if(Teclado.IZQUIERDA){
             posicion.setX(posicion.getX() - 1);//muevo uno a la derecha el jugador 
         }*/
+
+        if(Teclado.DISPARAR){//crea un laser que se añade al arraylist que se origina el 
+            //centro de la nave
+            estadoDeJuego.getObjetosQueSeMueven().add(new Laser(
+                getCentro().suma(puntaNave.mulPorEscalar(alto/2)),
+                puntaNave, 
+                10,
+                angulo,
+                Assets.laserRojo));
+        }
+
         if(Teclado.DERECHA){
             angulo += Math.PI/20;
         }
@@ -107,5 +123,9 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         //y centro el punto de rotacion en el medio de esta por medio de la division
         at.rotate(angulo, ancho/2, alto/2);
         graficos2D.drawImage(Assets.jugador, at, null);//dibujo la nave
+    }
+
+    public Vector2D getCentro(){//devuelve el centro de la nave
+        return new Vector2D(posicion.getX() + ancho/2, posicion.getY() + alto/2);
     }
 }
