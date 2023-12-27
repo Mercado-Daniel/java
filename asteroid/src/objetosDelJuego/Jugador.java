@@ -95,20 +95,21 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         //las siguientes lineas son para hacer que cuando la nave salga de pantalla 
         //aparesca del otro lado como en el pacman
         if(posicion.getX() > Window.ANCHO){//si la nave sale por la parte derecha
-            System.out.println(Window.ANCHO);//buscar mejor nombre para window en futuro
-            posicion.setX(0);//aparece por la parte izquierda
+            //buscar mejor nombre para window en futuro
+            posicion.setX(-ancho);//aparece por la parte izquierda
         }
         if(posicion.getY() > Window.ALTO){//si sale por arriba
-            posicion.setY(0);//aparece por abajo
+            posicion.setY(-alto);//aparece por abajo
         }
-        if(posicion.getX() < 0 ){//si sale por la izquierda 
+        if(posicion.getX() < -ancho ){//si sale por la izquierda 
             posicion.setX(Window.ANCHO);//aparece por la derecha
         }
-        if(posicion.getY() < -1){//si sale por abajo 
+        if(posicion.getY() < -alto){//si sale por abajo 
             posicion.setY(Window.ALTO);//aparece por arriba
         }
 
         cadenciaDeTiro.actualizar();
+        colicionaCon();
     }
 
     @Override
@@ -136,7 +137,5 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         graficos2D.drawImage(textura, at, null);//dibujo la nave
     }
 
-    public Vector2D getCentro(){//devuelve el centro de la nave
-        return new Vector2D(posicion.getX() + ancho/2, posicion.getY() + alto/2);
-    }
+    
 }

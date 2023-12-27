@@ -17,6 +17,10 @@ public class Vector2D{
         return new Vector2D(x + v.getX(), y + v.getY());
     }
 
+    public Vector2D resta(Vector2D v){//resta dos vectores
+        return new Vector2D(x - v.getX(), y - v.getY());
+    }
+
     public Vector2D mulPorEscalar(double escalar){//multiplica un vector por un escalar
          return new Vector2D(x * escalar, y * escalar);
     }

@@ -34,6 +34,39 @@ public class EstadoDeJuego {
         iniciarOleada();
     }
 
+    public void dividirMeteoro(Meteoro meteoro){
+
+        Tamanio tamanio = meteoro.getTamanio();
+        BufferedImage[] texturas = tamanio.texturas;
+
+        Tamanio nuevoTamanio = null;
+
+        switch (tamanio) {
+            case GRANDE:
+                nuevoTamanio = Tamanio.MEDIANO;
+                break;
+            case MEDIANO:
+                nuevoTamanio = Tamanio.CHICO;
+                break;
+            case CHICO:
+                nuevoTamanio = Tamanio.MUY_CHICO;
+                break;
+            default:
+                return;
+        }
+
+        for(int i = 0; i < tamanio.cantidad; i++){
+            objetosQueSeMueven.add(
+                new Meteoro(meteoro.getPosicion(),
+                    new Vector2D(0,1).setDireccion(Math.random()* Math.PI*2), 
+                    2.0 * Math.random() + 1, 
+                    texturas[(int)Math.random()*texturas.length], //se vuelve a elegir textura al azar
+                    this, 
+                    nuevoTamanio));
+        }
+
+    }
+
     private void iniciarOleada(){
         double x, y;//son las posiciones donde se van a crear los meteoros
 

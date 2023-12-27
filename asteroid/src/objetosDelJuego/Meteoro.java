@@ -16,6 +16,7 @@ public class Meteoro extends ObjetoMoviendose {
     public Meteoro(Vector2D posicion, Vector2D velocidad, double velocidadMaxima, BufferedImage textura, EstadoDeJuego estadoDeJuego, Tamanio tamanio){
         super(posicion, velocidad, velocidadMaxima, textura, estadoDeJuego);
         this.tamanio = tamanio;
+        this.velocidad = velocidad.mulPorEscalar(velocidadMaxima);
     }
 
     @Override
@@ -25,19 +26,25 @@ public class Meteoro extends ObjetoMoviendose {
          //aparesca del otro lado como en el pacman
         if(posicion.getX() > Window.ANCHO){//si la nave sale por la parte derecha
             System.out.println(Window.ANCHO);//buscar mejor nombre para window en futuro
-            posicion.setX(0);//aparece por la parte izquierda
+            posicion.setX(-ancho);//aparece por la parte izquierda
         }
         if(posicion.getY() > Window.ALTO){//si sale por arriba
-            posicion.setY(0);//aparece por abajo
+            posicion.setY(-alto);//aparece por abajo
         }
-        if(posicion.getX() < 0 ){//si sale por la izquierda 
+        if(posicion.getX() < -ancho ){//si sale por la izquierda 
             posicion.setX(Window.ANCHO);//aparece por la derecha
         }
-        if(posicion.getY() < -1){//si sale por abajo 
+        if(posicion.getY() < -alto){//si sale por abajo 
             posicion.setY(Window.ALTO);//aparece por arriba
         }
 
         angulo += Math.PI/50;
+    }
+
+    @Override
+    public void destruccuion(){
+        estadoDeJuego.dividirMeteoro(this);
+        super.destruccuion();
     }
 
     @Override
@@ -55,4 +62,6 @@ public class Meteoro extends ObjetoMoviendose {
     public Tamanio getTamanio(){
         return tamanio;
     }
+
+
 }

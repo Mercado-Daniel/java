@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+//import java.beans.ConstructorProperties;
 
 import estados.EstadoDeJuego;
 import mat.Vector2D;
@@ -22,9 +23,10 @@ public class Laser extends ObjetoMoviendose {
         posicion = posicion.suma(velocidad);//la velocidad siempro sera constante
         //por lo tanto no se agrega en este metodo
         if(posicion.getX() < 0 || posicion.getX() > Window.ANCHO || posicion.getY() < 0 || posicion.getY() > Window.ALTO){
-            estadoDeJuego.getObjetosQueSeMueven().remove(this);//de esta forma elimino el laser del arrayList
+            destruccuion();//de esta forma elimino el laser del arrayList
             //para que estos no existan infinitamente y saturen la memoria
         }
+        colicionaCon();
     }
 
     @Override
@@ -36,5 +38,10 @@ public class Laser extends ObjetoMoviendose {
 
         graficos2D.drawImage(textura, at, null);
 
+    }
+
+    @Override
+    public Vector2D getCentro(){//devuelve el centro de la nave
+        return new Vector2D(posicion.getX() + ancho/2, posicion.getY() + ancho/2);
     }
 }
