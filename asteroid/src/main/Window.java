@@ -40,7 +40,6 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
         setResizable(false);
         setLocationRelativeTo(null);
 
-        setVisible(true);
         //creamos el canvas 
         teclado = new Teclado();
         canvas = new Canvas();
@@ -51,6 +50,7 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
         
         add(canvas);//agregamos el canvas a la ventana
         canvas.addKeyListener(teclado);//añado el teclado al lienzo
+        setVisible(true);//mostramos la ventana
     }
 
     public static void main(String[] args) {
@@ -78,6 +78,7 @@ public class Window extends JFrame implements Runnable {//la ventana es un hilo 
         //graficos.drawImage(Assets.jugador, 100, 100, null);
         //graficos.setColor(Color.white);//pinta el visor de fps
         estadoDeJuego.dibujar(graficos);
+        graficos.setColor(Color.WHITE);
         graficos.drawString("" + mostrarFPS , 10, 10);
 
         //---------fin dibujo-------

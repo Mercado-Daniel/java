@@ -30,7 +30,9 @@ public class Vector2D{
     }
 
     public Vector2D normalizar(){ //devuelve un vector normalizado
-        return new Vector2D(x / getMagnitud(), y / getMagnitud());//divide cada componente entre su magnitud
+        double magnitud = getMagnitud();
+
+        return new Vector2D(x / magnitud, y / magnitud);//divide cada componente entre su magnitud
     }
 
     public double getMagnitud(){
@@ -38,7 +40,8 @@ public class Vector2D{
     }
 
     public Vector2D setDireccion(double angulo){
-        return new Vector2D(Math.cos(angulo) * getMagnitud(), Math.sin(angulo) * getMagnitud());
+        double magnitud = getMagnitud();
+        return new Vector2D(Math.cos(angulo) * magnitud, Math.sin(angulo) * magnitud);
     }
 
     public double getX() {

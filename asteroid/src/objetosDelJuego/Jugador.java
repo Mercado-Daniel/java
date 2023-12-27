@@ -13,25 +13,26 @@ import mat.Vector2D;
 import main.Window;//tener cuidado ya que awt tiene tambien window y este hace referencia al objeto mismo (jugador)
 
 public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
-    
+    private static final int CADENCIA_DE_TIRO = 300;
     private Vector2D puntaNave;//es hacia donde esta mirando la nave
     private Vector2D aceleracion;//es el cambio en la velocidad con respecto al tiempo
     private final double ACC = 0.2;
     private boolean acelerando = false;
 
     //para que la clase jugador pueda tener acceso al arrayList de objetosMoviendose
-    private EstadoDeJuego estadoDeJuego;
+    
 
     //para limitar la cantidad de tiros por segundo
-    private long tiempo = 0;
-    private long tiempoActual = System.currentTimeMillis();
+    private Cronometro cadenciaDeTiro;
+    // private long tiempo = 0;
+    // private long tiempoActual = System.currentTimeMillis();
     
 
     public Jugador(Vector2D posicion,Vector2D velocidad , double velocidadMaxima,BufferedImage textura, EstadoDeJuego estadoDeJuego){
-        super(posicion, velocidad, velocidadMaxima,textura);
-        this.estadoDeJuego = estadoDeJuego;
+        super(posicion, velocidad, velocidadMaxima,textura, estadoDeJuego);
         puntaNave = new Vector2D(0, 1);
         aceleracion = new Vector2D();//incializo la aceleracion de la nave
+        cadenciaDeTiro = new Cronometro();
     }
 
     @Override//el que borra el override 
@@ -42,19 +43,21 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         if(Teclado.IZQUIERDA){
             posicion.setX(posicion.getX() - 1);//muevo uno a la derecha el jugador 
         }*/
-        tiempo += System.currentTimeMillis() - tiempoActual;
-        tiempoActual = System.currentTimeMillis();
+        //tiempo += System.currentTimeMillis() - tiempoActual;
+        //tiempoActual = System.currentTimeMillis();
 
-        if(Teclado.DISPARAR && tiempo > 200){//crea un laser que se añade al arraylist que se origina el 
+        if(Teclado.DISPARAR && !cadenciaDeTiro.estaCorriendo()){//crea un laser que se añade al arraylist que se origina el 
             //centro de la nave
             estadoDeJuego.getObjetosQueSeMueven().add(0, new Laser(
                 getCentro().suma(puntaNave.mulPorEscalar(ancho)),
                 puntaNave, 
                 10,
                 angulo,
-                Assets.laserRojo));
+                Assets.laserRojo,
+                estadoDeJuego));
 
-            tiempo = 0;
+            //tiempo = 0;
+            cadenciaDeTiro.arranque(CADENCIA_DE_TIRO);
         }
 
         if(Teclado.DERECHA){
@@ -105,7 +108,7 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
             posicion.setY(Window.ALTO);//aparece por arriba
         }
 
-
+        cadenciaDeTiro.actualizar();
     }
 
     @Override
@@ -130,7 +133,7 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         //at.rotate(angulo, Assets.jugador.getWidth()/2, Assets.jugador.getHeight()/2);//obtengo el ancho y el alto de la imagen en el buffer 
         //y centro el punto de rotacion en el medio de esta por medio de la division
         at.rotate(angulo, ancho/2, alto/2);
-        graficos2D.drawImage(Assets.jugador, at, null);//dibujo la nave
+        graficos2D.drawImage(textura, at, null);//dibujo la nave
     }
 
     public Vector2D getCentro(){//devuelve el centro de la nave
