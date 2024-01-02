@@ -16,6 +16,8 @@ public class Assets {
     public static BufferedImage[] meteorosMedianos = new BufferedImage[2];
     public static BufferedImage[] meteorosChicos = new BufferedImage[2];
     public static BufferedImage[] meteorosMuyChicos = new BufferedImage[2];
+    //explosion animacion
+    public static BufferedImage[] explosionFotogramas = new BufferedImage[8];
 
     public static void iniciar(){
         //jugador
@@ -41,6 +43,10 @@ public class Assets {
 
         for(int i = 0; i < meteorosMuyChicos.length; i++){
             meteorosMuyChicos[i] = GraficosRen.cargarImagen("/meteoros/meteorGrey_tiny" + (i+1) + ".png");
+        }
+
+        for(int i = 0; i < explosionFotogramas.length; i++){
+            explosionFotogramas[i] = GraficosRen.cargarImagen("/explosion/" + (i+1) + ".png");
         }
     }
 }

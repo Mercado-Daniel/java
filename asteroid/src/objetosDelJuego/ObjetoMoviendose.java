@@ -51,6 +51,7 @@ public abstract class ObjetoMoviendose extends ObjetoDelJuego {
     private void objetoColisionando(ObjetoMoviendose a, ObjetoMoviendose b){
         if(!(a instanceof Meteoro && b instanceof Meteoro)){//si alguno de los objetos 
             //no es un meteoro procedo a la destruccion de ambos objetos
+            estadoDeJuego.iniciarExplosion(getCentro());
             a.destruccuion();
             b.destruccuion();
         }

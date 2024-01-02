@@ -6,7 +6,9 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import graficos.Animacion;
 import graficos.Assets;
+//import graficos.Animacion;
 import main.Window;
 import mat.Vector2D;
 import objetosDelJuego.Jugador;
@@ -23,6 +25,8 @@ public class EstadoDeJuego {
 
     private int meteoros;//la cantidad de metoros en la pantalla
 
+    private ArrayList<Animacion> explociones = new ArrayList<Animacion>();//almacena las animaciones del juego de forma dinamica 
+
     public EstadoDeJuego() {
         //jugador = new Jugador(new Vector2D(100, 500), Assets.jugador);      
         jugador = new Jugador(new Vector2D(400, 300), new Vector2D(), 5, Assets.jugador, this);
@@ -32,6 +36,15 @@ public class EstadoDeJuego {
         meteoros = 1;
 
         iniciarOleada();
+    }
+
+    public void iniciarExplosion(Vector2D posicion){
+        explociones.add(new Animacion(
+            Assets.explosionFotogramas,
+            50, 
+            posicion.resta(new Vector2D(
+                Assets.explosionFotogramas[0].getWidth()/2,
+                Assets.explosionFotogramas[0].getHeight()/2))));
     }
 
     public void dividirMeteoro(Meteoro meteoro){
@@ -95,6 +108,15 @@ public class EstadoDeJuego {
         //uso un for para recorrer el arraylist
         for(int i = 0; i < objetosQueSeMueven.size(); i++){
             objetosQueSeMueven.get(i).actualizar();//llamo el metodo actualizar correspondiente a cada objeto
+
+        }
+
+        for(int i = 0; i < explociones.size(); i++){
+            Animacion animacion = explociones.get(i);
+            animacion.actualizar();
+            if(!animacion.estaCorriendo()){//la animacion llego a su fin
+                explociones.remove(i);//elimino la animacion de la pantalla
+            }
         }
 
         for(int i = 0; i < objetosQueSeMueven.size(); i++){
@@ -112,6 +134,15 @@ public class EstadoDeJuego {
         graficos2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);//renderiza al presionar una tecla, evitando que la nave se vea borrosa
         for(int i = 0; i < objetosQueSeMueven.size(); i++){
             objetosQueSeMueven.get(i).dibujar(graficos);//llamo el metodo dibujar correcspondiente a cada objeto
+        }
+
+        for(int i = 0;i < explociones.size(); i++){
+            Animacion animacion = explociones.get(i);
+            graficos2D.drawImage(
+                animacion.getFotograma(),
+                (int)animacion.getPosicion().getX(),
+                (int)animacion.getPosicion().getY(), 
+                null);
         }
 
     }
