@@ -14,11 +14,13 @@ import mat.Vector2D;
 import objetosDelJuego.Jugador;
 import objetosDelJuego.Meteoro;
 import objetosDelJuego.ObjetoMoviendose;
+import objetosDelJuego.Ovni;
 import objetosDelJuego.Tamanio;
 
 //importo la clase Graficos
 
 public class EstadoDeJuego {
+    public static final int OVNI_MAXIMA_VELOCIDAD = 3;
     private Jugador jugador;
     private ArrayList<ObjetoMoviendose> objetosQueSeMueven = new ArrayList<ObjetoMoviendose>();//se encarga de almacenar
     //todos los objetos que hereden objetosmoviendose que se dibujaran en la pantalla
@@ -45,6 +47,38 @@ public class EstadoDeJuego {
             posicion.resta(new Vector2D(
                 Assets.explosionFotogramas[0].getWidth()/2,
                 Assets.explosionFotogramas[0].getHeight()/2))));
+    }
+
+    private void espamearOvni(){
+        int alAzar = (int)(Math.random()*2);
+
+        double x = alAzar == 0 ? (Math.random()*Window.ANCHO) : 0;
+        double y = alAzar == 0 ? 0 : (Math.random()*Window.ALTO);
+
+        ArrayList<Vector2D> camino = new ArrayList<Vector2D>();
+
+        double posX, posY;
+
+        posX = Math.random()*(Window.ANCHO/2) + Window.ANCHO/2;
+        posY = Math.random()*Window.ALTO/2;
+        camino.add(new Vector2D(posX, posY));
+
+        posX = Math.random()*Window.ANCHO/2;
+        posY = Math.random()*(Window.ALTO/2) + Window.ALTO/2;
+        camino.add(new Vector2D(posX, posY));
+
+        posX = Math.random()*(Window.ANCHO/2) + Window.ANCHO/2;
+        posY = Math.random()*(Window.ALTO/2) + Window.ALTO/2;
+        camino.add(new Vector2D(posX, posY));
+
+        objetosQueSeMueven.add(new Ovni(
+            new Vector2D(x, y), 
+            new Vector2D(), 
+            OVNI_MAXIMA_VELOCIDAD, 
+            Assets.ovni, 
+            camino, 
+            this));
+        
     }
 
     public void dividirMeteoro(Meteoro meteoro){
@@ -99,6 +133,7 @@ public class EstadoDeJuego {
         }
 
         meteoros ++;
+        espamearOvni();
     }
 
 
