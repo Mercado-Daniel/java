@@ -8,9 +8,12 @@ import java.util.ArrayList;
 
 
 import estados.EstadoDeJuego;
+import graficos.Assets;
 import mat.Vector2D;
+import objetosDelJuego.Laser;
 
 public class Ovni extends ObjetoMoviendose{
+    public static final int RATIO_DE_DISPARO = 1000;
     public static final int ANCHO = 800;
 	public static final int ALTO = 600;
     public static final int RADIO_DEL_NODO = 160;
@@ -19,12 +22,15 @@ public class Ovni extends ObjetoMoviendose{
     private Vector2D nodoActual;
     private int indice;
     private boolean siguiendo;
+    private Cronometro tiempoDisparoOvni;
     
     public Ovni(Vector2D posicion, Vector2D velocidad, double velocidadMaxima, BufferedImage textura, ArrayList<Vector2D> camino, EstadoDeJuego estadoDeJuego){
         super(posicion, velocidad, velocidadMaxima, textura, estadoDeJuego);
         this.camino = camino;
         indice = 0;
         siguiendo = true;
+        tiempoDisparoOvni = new Cronometro();
+        tiempoDisparoOvni.arranque(alto);
     }
 
     public Vector2D caminoASeguir(){
@@ -65,9 +71,32 @@ public class Ovni extends ObjetoMoviendose{
         if(posicion.getX() > ANCHO || posicion.getY() > ALTO || posicion.getX() < 0 || posicion.getY() < 0){
             destruccuion();
         }
+        
+        // disparar 
+        if(!tiempoDisparoOvni.estaCorriendo()){
+
+            Vector2D alJugador = estadoDeJuego.getJugador().getCentro().resta(getCentro()); //es un vector que va desde el ovnia al jugador
+            alJugador = alJugador.normalizar();
+            double anguloActual = alJugador.getAngulo();
+            double nuevoAngulo = Math.random()*(Math.PI) - Math.PI/2 + anguloActual;
+            alJugador = alJugador.setDireccion(nuevoAngulo);
+
+            Laser laser = new Laser(
+                getCentro().suma(alJugador.mulPorEscalar(ancho)), 
+                alJugador, 
+                10, 
+                nuevoAngulo + Math.PI/2, 
+                Assets.laserVerde, 
+                estadoDeJuego);
+            
+            estadoDeJuego.getObjetosQueSeMueven().add(0, laser);
+
+            tiempoDisparoOvni.arranque(RATIO_DE_DISPARO);
+        }
 
         angulo += 0.05;
         colicionaCon();
+        tiempoDisparoOvni.actualizar();
     }
 
     @Override

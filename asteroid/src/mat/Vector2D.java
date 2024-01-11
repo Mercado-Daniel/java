@@ -48,6 +48,10 @@ public class Vector2D{
         return new Vector2D(Math.cos(angulo) * magnitud, Math.sin(angulo) * magnitud);
     }
 
+    public double getAngulo(){
+        return Math.asin(y/getMagnitud());//arseno (cateto opuesto / hipotenuza)
+    }
+
     public double getX() {
         return x;
     }

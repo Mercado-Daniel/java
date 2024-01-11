@@ -165,6 +165,7 @@ public class EstadoDeJuego {
     public void dibujar(Graphics graficos) {//recibe un objeto graficos y lo dibuja en el buffer
         //jugador.dibujar(graficos);
         Graphics2D graficos2D = (Graphics2D)graficos;
+
         //antializing
         graficos2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);//renderiza al presionar una tecla, evitando que la nave se vea borrosa
         for(int i = 0; i < objetosQueSeMueven.size(); i++){
@@ -185,4 +186,8 @@ public class EstadoDeJuego {
     public ArrayList<ObjetoMoviendose> getObjetosQueSeMueven(){
         return objetosQueSeMueven;
     } 
+
+    public Jugador getJugador(){//retorna el jugador para que el ovni pueda dispararle
+        return jugador;
+    }
 }
