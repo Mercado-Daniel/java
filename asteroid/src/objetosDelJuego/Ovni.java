@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import estados.EstadoDeJuego;
 import graficos.Assets;
 import mat.Vector2D;
-import objetosDelJuego.Laser;
 
 public class Ovni extends ObjetoMoviendose{
     public static final int RATIO_DE_DISPARO = 1000;
@@ -78,14 +77,20 @@ public class Ovni extends ObjetoMoviendose{
             Vector2D alJugador = estadoDeJuego.getJugador().getCentro().resta(getCentro()); //es un vector que va desde el ovnia al jugador
             alJugador = alJugador.normalizar();
             double anguloActual = alJugador.getAngulo();
-            double nuevoAngulo = Math.random()*(Math.PI) - Math.PI/2 + anguloActual;
-            alJugador = alJugador.setDireccion(nuevoAngulo);
+            anguloActual += Math.random()*(Math.PI/2) - (Math.PI/2)/2;
+            
+
+            if(alJugador.getX() < 0){
+                anguloActual = -anguloActual + Math.PI;
+            }
+            
+            alJugador = alJugador.setDireccion(anguloActual);
 
             Laser laser = new Laser(
                 getCentro().suma(alJugador.mulPorEscalar(ancho)), 
                 alJugador, 
                 10, 
-                nuevoAngulo + Math.PI/2, 
+                anguloActual + Math.PI/2, 
                 Assets.laserVerde, 
                 estadoDeJuego);
             
@@ -97,6 +102,12 @@ public class Ovni extends ObjetoMoviendose{
         angulo += 0.05;
         colicionaCon();
         tiempoDisparoOvni.actualizar();
+    }
+
+    @Override
+    protected void destruccuion() {
+        estadoDeJuego.sumarPuntaje(40);
+        super.destruccuion();
     }
 
     @Override

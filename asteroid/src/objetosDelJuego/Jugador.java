@@ -26,6 +26,12 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
     private Cronometro cadenciaDeTiro;
     // private long tiempo = 0;
     // private long tiempoActual = System.currentTimeMillis();
+    //hacer que titile la nave
+    private boolean apareciendo, visible;
+    private Cronometro tiempoAparecer; //= 3000;
+    private Cronometro tiempoTitilar; //= 200;
+
+
     
 
     public Jugador(Vector2D posicion,Vector2D velocidad , double velocidadMaxima,BufferedImage textura, EstadoDeJuego estadoDeJuego){
@@ -33,10 +39,13 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         puntaNave = new Vector2D(0, 1);
         aceleracion = new Vector2D();//incializo la aceleracion de la nave
         cadenciaDeTiro = new Cronometro();
+        tiempoAparecer = new Cronometro();
+        tiempoTitilar = new Cronometro();
     }
 
     @Override//el que borra el override 
     public void actualizar(){
+
         /*if(Teclado.DERECHA){
             posicion.setX(posicion.getX() + 1);//muevo uno a la derecha el jugador
         }
@@ -46,7 +55,18 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         //tiempo += System.currentTimeMillis() - tiempoActual;
         //tiempoActual = System.currentTimeMillis();
 
-        if(Teclado.DISPARAR && !cadenciaDeTiro.estaCorriendo()){//crea un laser que se añade al arraylist que se origina el 
+        if(!tiempoAparecer.estaCorriendo()){
+            apareciendo = false;
+            visible = true;
+        }
+        if(apareciendo){
+            if(!tiempoTitilar.estaCorriendo()){
+                tiempoTitilar.arranque(200);
+                visible = !visible;
+            }
+        }
+
+        if(Teclado.DISPARAR && !cadenciaDeTiro.estaCorriendo() && !apareciendo){//crea un laser que se añade al arraylist que se origina el 
             //centro de la nave
             estadoDeJuego.getObjetosQueSeMueven().add(0, new Laser(
                 getCentro().suma(puntaNave.mulPorEscalar(ancho)),
@@ -109,11 +129,16 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         }
 
         cadenciaDeTiro.actualizar();
+        tiempoAparecer.actualizar();
+        tiempoTitilar.actualizar();
         colicionaCon();
     }
 
     @Override
     public void dibujar(Graphics graficos){
+        if(!visible){
+            return;
+        }
         //graficos.drawImage(textura,(int)posicion.getX(), (int)posicion.getY(), null);
         Graphics2D graficos2D = (Graphics2D)graficos;//se encarga de recibir los assets i dibujarlos en pantalla junto con sus transformaciones
         //recibe la posicion de la nave mas el centro de estta
@@ -137,5 +162,24 @@ public class Jugador extends /*ObjetoDelJuego*/ ObjetoMoviendose{
         graficos2D.drawImage(textura, at, null);//dibujo la nave
     }
 
+    @Override
+    protected void destruccuion() {
+        apareciendo = true;
+        tiempoAparecer.arranque(3000);
+        reiniciarValores();
+        estadoDeJuego.restarVida();
+        //super.destruccuion();
+    }
+
+    private void reiniciarValores(){
+        angulo = 0;
+        velocidad = new Vector2D();
+        posicion = new Vector2D(400, 300);
+    }
+
+    public boolean estaApareciendo()
+    {
+        return apareciendo;
+    }
     
 }

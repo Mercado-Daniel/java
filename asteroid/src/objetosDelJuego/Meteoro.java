@@ -44,6 +44,7 @@ public class Meteoro extends ObjetoMoviendose {
     @Override
     public void destruccuion(){
         estadoDeJuego.dividirMeteoro(this);
+        estadoDeJuego.sumarPuntaje(20);
         super.destruccuion();
     }
 

@@ -29,6 +29,10 @@ public class EstadoDeJuego {
 
     private ArrayList<Animacion> explociones = new ArrayList<Animacion>();//almacena las animaciones del juego de forma dinamica 
 
+    //hud
+    private int puntaje = 0;
+    private int vidas = 3;
+
     public EstadoDeJuego() {
         //jugador = new Jugador(new Vector2D(100, 500), Assets.jugador);      
         jugador = new Jugador(new Vector2D(400, 300), new Vector2D(), 5, Assets.jugador, this);
@@ -38,6 +42,10 @@ public class EstadoDeJuego {
         meteoros = 1;
 
         iniciarOleada();
+    }
+
+    public void sumarPuntaje(int puntos){
+        puntaje += puntos;
     }
 
     public void iniciarExplosion(Vector2D posicion){
@@ -180,7 +188,52 @@ public class EstadoDeJuego {
                 (int)animacion.getPosicion().getY(), 
                 null);
         }
+        dibujarPuntaje(graficos);
+        dibujarvidas(graficos2D);
 
+    }
+
+    private void dibujarPuntaje(Graphics graficos){
+        Vector2D posicion = new Vector2D(650, 25);
+        String puntajeACadena = Integer.toString(puntaje);
+        for(int i = 0; i < puntajeACadena.length(); i++){
+            graficos.drawImage(Assets.numeros[Integer.parseInt(puntajeACadena.substring(i, i + 1))], 
+                (int)posicion.getX(), 
+                (int)posicion.getY(), 
+                null);
+            posicion.setX(posicion.getX() + 20);
+        }
+    }
+
+    public void dibujarvidas(Graphics graficos){
+        Vector2D vidasPosicion = new Vector2D(25, 25);
+        graficos.drawImage(
+            Assets.vida, 
+            (int)vidasPosicion.getX(), 
+            (int)vidasPosicion.getY(), 
+            null);
+        graficos.drawImage(
+            Assets.numeros[10], 
+            (int)vidasPosicion.getX()+40,
+            (int)vidasPosicion.getY()+5, 
+            null);
+
+        String vidasAString = Integer.toString(vidas);
+        Vector2D posicion = new Vector2D(vidasPosicion.getX(), vidasPosicion.getY());
+
+        for(int i = 0; i < vidasAString.length(); i++){
+            int numero = Integer.parseInt(vidasAString.substring(i, i+1));
+            if(numero < 0){
+                break;
+            }
+            graficos.drawImage(
+                Assets.numeros[numero], 
+                (int)posicion.getX()+60, 
+                (int)posicion.getY()+5, 
+                null);
+            posicion.setX(posicion.getX()+20);
+        }
+        
     }
 
     public ArrayList<ObjetoMoviendose> getObjetosQueSeMueven(){
@@ -189,5 +242,9 @@ public class EstadoDeJuego {
 
     public Jugador getJugador(){//retorna el jugador para que el ovni pueda dispararle
         return jugador;
+    }
+
+    public void restarVida(){
+        vidas--;
     }
 }

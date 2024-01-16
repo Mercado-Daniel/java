@@ -20,6 +20,10 @@ public class Assets {
     public static BufferedImage[] explosionFotogramas = new BufferedImage[8];
     //ovni
     public static BufferedImage ovni;
+    //numeros
+    public static BufferedImage[] numeros = new BufferedImage[11];
+    //vida
+    public static BufferedImage vida;
 
     public static void iniciar(){
         //jugador
@@ -52,5 +56,11 @@ public class Assets {
         }
         //ovni
         ovni = GraficosRen.cargarImagen("/naves/ufoGreen.png");
+        //numeros
+        for(int i = 0; i < numeros.length; i++){
+            numeros[i] = GraficosRen.cargarImagen("/numeros/" + i + ".png");
+        }
+        //vida
+        vida = GraficosRen.cargarImagen("/numeros/vida.png");
     }
 }
