@@ -15,6 +15,7 @@ import estados.EstadoDeJuego;
 public class Jugador extends ObjetoQueSemueve{
 
     private Cronometro cronometro = new Cronometro();
+    private int contador = 0;
 
     public Jugador(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
         super(posicion, textura, estadoDeJuego, texturaArray, nivel);
@@ -22,9 +23,31 @@ public class Jugador extends ObjetoQueSemueve{
     
     @Override
     public void actualizar(){
+        if(Teclado.SALTAR && (colision() == "abajo")){
+            if(!cronometro.estaCorriendo()){
+                if(textura == texturaArray[15] || textura == texturaArray[21]){
+                    textura = texturaArray[16];
+                }
+                if(textura == texturaArray[0] || textura == texturaArray [6]){
+                    textura = texturaArray[1];
+                }
+            }
+            cronometro.arranque(100);
+            contador = 0;
+            //caida = Constantes.GRAVEDAD;
+        }
+        if(colision() == "abajo") {
+            setCaida(0);
+        }else{
+            setCaida(Constantes.GRAVEDAD);
+        }
         
-            
-        posicion.setEjeY(posicion.getEjeY() + caida);
+        if(contador <= 30){
+            posicion.setEjeY(posicion.getEjeY() - 4);
+            contador++;
+        }else{
+            posicion.setEjeY(posicion.getEjeY() + caida);
+        }
         if(Teclado.DERECHA){
             //animacion
             if(!cronometro.estaCorriendo()){
@@ -46,23 +69,14 @@ public class Jugador extends ObjetoQueSemueve{
                     textura = texturaArray[15];
                 }
             }
+            if(colision() != "derecha"){
+                System.out.println("choco");
                 posicion.setEjeX(posicion.getEjeX() + izquierda);
-            cronometro.arranque(100);
-        }
-        if(Teclado.SALTAR){
-            if(!cronometro.estaCorriendo()){
-                if(textura == texturaArray[15] || textura == texturaArray[21]){
-                    textura = texturaArray[16];
-                }
-                if(textura == texturaArray[0] || textura == texturaArray [6]){
-                    textura = texturaArray[1];
-                }
             }
-            
-                posicion.setEjeY(posicion.getEjeY() - 20);
             cronometro.arranque(100);
-            caida = Constantes.GRAVEDAD;
         }
+        
+        
         cronometro.actualizar();
     }
 

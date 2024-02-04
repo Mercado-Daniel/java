@@ -14,6 +14,6 @@ public class Constantes {
     public final static double NANOSEGUNDOS_POR_FPS = NANOSEGUNDOS_POR_SEGUNDO / FPS_OBJETIVO; 
 
     //caida
-    public final static int GRAVEDAD = 5;
+    public final static int GRAVEDAD = 4;
 
 }

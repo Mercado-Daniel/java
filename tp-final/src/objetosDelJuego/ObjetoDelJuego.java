@@ -1,6 +1,7 @@
 package objetosDelJuego;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import estados.EstadoDeJuego;
@@ -54,12 +55,20 @@ public abstract class ObjetoDelJuego {//es una clase abstracta
         return (int)getPosicion().getEjeX() + ancho/2;
     }
 
+    public int getCentroEjeY(){
+        return (int)getPosicion().getEjeY() - alto/2;
+    }
+
     public void setCaida(int caida){
         this.caida = caida;
     }
 
     public Vector2D getCentro(){
         return new Vector2D(posicion.getEjeX() + ancho/2, posicion.getEjeY() + alto/2);
+    }
+
+    public Rectangle rectangulo(){
+        return new Rectangle((int)posicion.getEjeX(), (int)posicion.getEjeY(), ancho , alto);
     }
 
 }
