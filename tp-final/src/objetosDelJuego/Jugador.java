@@ -23,7 +23,7 @@ public class Jugador extends ObjetoQueSemueve{
     
     @Override
     public void actualizar(){
-        if(Teclado.SALTAR && (colision() == "abajo")){
+        if(Teclado.SALTAR && colisionAbajo()){
             if(!cronometro.estaCorriendo()){
                 if(textura == texturaArray[15] || textura == texturaArray[21]){
                     textura = texturaArray[16];
@@ -36,15 +36,19 @@ public class Jugador extends ObjetoQueSemueve{
             contador = 0;
             //caida = Constantes.GRAVEDAD;
         }
-        if(colision() == "abajo") {
+        if(colisionAbajo()) {
             setCaida(0);
         }else{
             setCaida(Constantes.GRAVEDAD);
         }
-        
-        if(contador <= 30){
+
+        if(contador <= 30 ){
+            System.out.println(colisionArriba());
             posicion.setEjeY(posicion.getEjeY() - 4);
             contador++;
+            if(colisionArriba()){
+                posicion.setEjeY(posicion.getEjeY() + caida);
+            }
         }else{
             posicion.setEjeY(posicion.getEjeY() + caida);
         }
@@ -57,7 +61,10 @@ public class Jugador extends ObjetoQueSemueve{
                     textura = texturaArray[0];
                 }
             }
+            if(!colisionDerecha()){
+
                 posicion.setEjeX(posicion.getEjeX() + derecha);//movimiento
+            }
             cronometro.arranque(100);
             //fin animacion
         }
@@ -69,8 +76,7 @@ public class Jugador extends ObjetoQueSemueve{
                     textura = texturaArray[15];
                 }
             }
-            if(colision() != "derecha"){
-                System.out.println("choco");
+            if(!colisionIzquierda()){
                 posicion.setEjeX(posicion.getEjeX() + izquierda);
             }
             cronometro.arranque(100);

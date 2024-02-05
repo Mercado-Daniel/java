@@ -45,7 +45,6 @@ public class EstadoDeJuego {
         //jugador.dibujar(graficos);//dibujo el jugador en el estado de juego 
         for(int i = 0; i < objetos.size(); i++){
             objetos.get(i).dibujar(graficos);
-            System.out.println(i);
         }
         nivel.dibujar(graficos);
         

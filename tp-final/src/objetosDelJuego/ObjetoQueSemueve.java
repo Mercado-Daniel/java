@@ -27,70 +27,66 @@ public abstract class ObjetoQueSemueve extends ObjetoDelJuego {
         ladrillos = nivel.getLadrillos();
     }
 
+    public boolean colisionDerecha(){
+        for(int i = 0; i < ladrillos.size(); i++){
+            if(this.rectangulo().intersects(ladrillos.get(i).rectangulo())){
+                if(this.rectangulo().getMaxX() == ladrillos.get(i).rectangulo().getMinX() + 1 &&
+                    this.rectangulo().getCenterY() - 4 >= ladrillos.get(i).rectangulo().getMinY() &&
+                    this.rectangulo().getCenterY() -4 < ladrillos.get(i).rectangulo().getMaxY() 
+                    ){
+                    return true;  
+                }
+            }
+        }
+        return false;
+    }
+    
+
     public boolean colisionAbajo(){
         for(int i = 0; i < ladrillos.size(); i++){
             if(this.rectangulo().intersects(ladrillos.get(i).rectangulo())){
-               // return true;
-                
-                    System.out.println((int)this.rectangulo().getMaxY());
-                    System.out.println((int)ladrillos.get(i).rectangulo().getMinY());
-                    if((int)this.rectangulo().getMaxY() == (int)ladrillos.get(i).rectangulo().getMinY() + 4){
-                        return true;
-                    }
-                
+                if(this.rectangulo().getMaxY() - 4 == ladrillos.get(i).rectangulo().getMinY()&&
+                    this.rectangulo().getMinX() <= ladrillos.get(i).rectangulo().getMaxX() - 4 &&
+                    this.rectangulo().getMaxX() >= ladrillos.get(i).rectangulo().getMinX() + 4    
+                ){
+                    return true;  
+                }
             }
         }
         return false;
     }
+    
+    
 
-    public boolean colisionDerecha(){
-        for(int i = 0; i < ladrillos.size(); i++){
-            if (this.getLadoDerecho() == ladrillos.get(i).getLadoIzquierdo()
-                && (this.getCentroEjeY() <= ladrillos.get(i).getLadoSuperior()
-                && this.getCentroEjeY() >= ladrillos.get(i).getLadoInferior() )) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public String colision(){
+    public boolean colisionIzquierda(){
         for(int i = 0; i < ladrillos.size(); i++){
             if(this.rectangulo().intersects(ladrillos.get(i).rectangulo())){
-                return tipoColision(ladrillos.get(i));  
-            }
-        }
-        return null;
-    }
-    
-    public String tipoColision(Ladrillo ladrillo){
-    
-        double diferenciaX = this.getCentro().getEjeX() - ladrillo.getCentro().getEjeX();
-        double diferenciaY = this.getCentro().getEjeY() - ladrillo.getCentro().getEjeY();
-                            //calculo el valor absoluto de diferencia y le resto la suma de las mitades del ancho de los dos objetos
-        double colisionX = Math.abs(diferenciaX) - (this.rectangulo().getWidth() / 2 + ladrillo.rectangulo().getWidth() / 2);
-        double colisionY = Math.abs(diferenciaY) - (this.rectangulo().getHeight() / 2 + ladrillo.rectangulo().getHeight() / 2);
-    
-        if(colisionX < 0 && colisionY < 0){
-            if(Math.abs(colisionX) > Math.abs(colisionY)){
-                //colicion por los lados
-                if(diferenciaX < 0){
-                    return "izquierda";
-                }else{
-                    return "derecha";
-                }
-            }else{
-                if(diferenciaY < 0){
-                    return "arriba";
-                }else{
-                    return "abajo";
+                if(this.rectangulo().getMinX() == ladrillos.get(i).rectangulo().getMaxX() - 1 &&
+                    this.rectangulo().getCenterY() - 4 >= ladrillos.get(i).rectangulo().getMinY() &&
+                    this.rectangulo().getCenterY() -4 < ladrillos.get(i).rectangulo().getMaxY() 
+                    ){
+                    return true;  
                 }
             }
-        }else{
-            return null;
         }
-    
+        return false;
     }
-    
+
+    public boolean colisionArriba(){
+        for(int i = 0; i < ladrillos.size(); i++){
+            if(this.rectangulo().intersects(ladrillos.get(i).rectangulo())){
+                if(this.rectangulo().getMinY() + 4 == ladrillos.get(i).rectangulo().getMaxY() &&
+                    this.rectangulo().getMinX() <= ladrillos.get(i).rectangulo().getMaxX() - 4 &&
+                    this.rectangulo().getMaxX() >= ladrillos.get(i).rectangulo().getMinX() + 4   
+                ){
+                    System.out.println("casas");
+                    return true;  
+                }
+                System.out.println(this.rectangulo().getMinY());
+                System.out.println(ladrillos.get(i).rectangulo().getMaxY());
+            }
+        }
+        return false;
+    }
 }
 
