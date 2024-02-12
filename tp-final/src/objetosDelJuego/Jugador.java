@@ -16,6 +16,7 @@ public class Jugador extends ObjetoQueSemueve{
 
     private Cronometro cronometro = new Cronometro();
     private int contador = 0;
+    private int monedas = 0;
 
     public Jugador(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
         super(posicion, textura, estadoDeJuego, texturaArray, nivel);
@@ -23,7 +24,7 @@ public class Jugador extends ObjetoQueSemueve{
     
     @Override
     public void actualizar(){
-        if(Teclado.SALTAR && colisionAbajo()){
+        if(Teclado.SALTAR && colisionAbajo() instanceof Ladrillo){
             if(!cronometro.estaCorriendo()){
                 if(textura == texturaArray[15] || textura == texturaArray[21]){
                     textura = texturaArray[16];
@@ -36,18 +37,20 @@ public class Jugador extends ObjetoQueSemueve{
             contador = 0;
             //caida = Constantes.GRAVEDAD;
         }
-        if(colisionAbajo()) {
+        if(colisionAbajo() instanceof Ladrillo) {
             setCaida(0);
         }else{
             setCaida(Constantes.GRAVEDAD);
         }
 
         if(contador <= 30 ){
-            System.out.println(colisionArriba());
             posicion.setEjeY(posicion.getEjeY() - 4);
             contador++;
-            if(colisionArriba()){
+            if(colisionArriba() instanceof Ladrillo){
                 posicion.setEjeY(posicion.getEjeY() + caida);
+                if (colisionDerecha() instanceof Ladrillo || colisionIzquierda() instanceof Ladrillo) {
+                    posicion.setEjeX(posicion.getEjeX());
+                }
             }
         }else{
             posicion.setEjeY(posicion.getEjeY() + caida);
@@ -61,7 +64,7 @@ public class Jugador extends ObjetoQueSemueve{
                     textura = texturaArray[0];
                 }
             }
-            if(!colisionDerecha()){
+            if(!(colisionDerecha() instanceof Ladrillo)){
 
                 posicion.setEjeX(posicion.getEjeX() + derecha);//movimiento
             }
@@ -76,14 +79,20 @@ public class Jugador extends ObjetoQueSemueve{
                     textura = texturaArray[15];
                 }
             }
-            if(!colisionIzquierda()){
+            if(!(colisionIzquierda() instanceof Ladrillo)){
                 posicion.setEjeX(posicion.getEjeX() + izquierda);
             }
             cronometro.arranque(100);
         }
-        
-        
+        if(colisionGeneral() instanceof Monedas){
+            colisionGeneral().destruir();
+            monedas += 1;
+        }
+        if(colisionDerecha() instanceof Enemigo || colisionArriba() instanceof Enemigo || colisionIzquierda() instanceof Enemigo){
+            destruir();
+        }
         cronometro.actualizar();
+        System.out.println(monedas);
     }
 
     @Override

@@ -35,40 +35,19 @@ public abstract class ObjetoDelJuego {//es una clase abstracta
         this.posicion = posicion;
     }
 
-    public int getLadoSuperior(){
-        return ((int)posicion.getEjeY() - alto);
-    }
-
-    public int getLadoInferior(){
-        return (int)posicion.getEjeY();
-    }
-
-    public int getLadoDerecho(){
-        return (int)posicion.getEjeX() + ancho;
-    }
-
-    public int getLadoIzquierdo(){
-        return (int)posicion.getEjeX();
-    }
-
-    public int getCentroEjeX(){
-        return (int)getPosicion().getEjeX() + ancho/2;
-    }
-
-    public int getCentroEjeY(){
-        return (int)getPosicion().getEjeY() - alto/2;
-    }
 
     public void setCaida(int caida){
         this.caida = caida;
     }
 
-    public Vector2D getCentro(){
-        return new Vector2D(posicion.getEjeX() + ancho/2, posicion.getEjeY() + alto/2);
-    }
 
     public Rectangle rectangulo(){
         return new Rectangle((int)posicion.getEjeX(), (int)posicion.getEjeY(), ancho , alto);
     }
+
+    protected void destruir(){
+        estadoDeJuego.getObjetos().remove(this);//destruye este objeto
+    }
+
 
 }

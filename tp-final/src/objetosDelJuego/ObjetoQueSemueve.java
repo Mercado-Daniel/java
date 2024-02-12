@@ -1,7 +1,8 @@
 package objetosDelJuego;
 
 import java.awt.image.BufferedImage;
-import java.util.List;
+import java.util.ArrayList;
+//import java.util.List;
 
 import estados.EstadoDeJuego;
 import matematicas.Vector2D;
@@ -12,9 +13,10 @@ public abstract class ObjetoQueSemueve extends ObjetoDelJuego {
     protected BufferedImage[] texturaArray;
     protected Cronometro cronometro;
     protected Nivel nivel;
-    private List<Ladrillo> ladrillos;
+    private ArrayList<ObjetoDelJuego> objetos;
     int izquierda;
     int derecha;
+    int velocidad;
     
     public ObjetoQueSemueve(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
         super(posicion, textura, estadoDeJuego);
@@ -24,69 +26,129 @@ public abstract class ObjetoQueSemueve extends ObjetoDelJuego {
         setCaida(Constantes.GRAVEDAD);
         izquierda = -1;
         derecha = + 1;
-        ladrillos = nivel.getLadrillos();
+        velocidad = 1;
+        objetos = estadoDeJuego.getObjetos();
     }
 
-    public boolean colisionDerecha(){
-        for(int i = 0; i < ladrillos.size(); i++){
-            if(this.rectangulo().intersects(ladrillos.get(i).rectangulo())){
-                if(this.rectangulo().getMaxX() == ladrillos.get(i).rectangulo().getMinX() + 1 &&
-                    this.rectangulo().getCenterY() - 4 >= ladrillos.get(i).rectangulo().getMinY() &&
-                    this.rectangulo().getCenterY() -4 < ladrillos.get(i).rectangulo().getMaxY() 
+    protected ObjetoDelJuego colisionDerecha(){
+        objetos = estadoDeJuego.getObjetos();
+
+        for(int i = 0; i < objetos.size(); i++){
+
+            ObjetoDelJuego m = objetos.get(i);
+
+            if(m.equals(this)){
+                continue;//si son iguales no colicionan por lo tanto paso a la siguiente iteracion
+            }
+            if(this.rectangulo().intersects(m.rectangulo())){
+                if((this.rectangulo().getMaxX() == m.rectangulo().getMinX() + velocidad ||
+                    this.rectangulo().getMaxX() == m.rectangulo().getMinX() ||
+                    this.rectangulo().getMaxX() + velocidad == m.rectangulo().getMinX())&&
+                    this.rectangulo().getCenterY() -caida >= m.rectangulo().getMinY() &&
+                    this.rectangulo().getCenterY() -caida < m.rectangulo().getMaxY() 
                     ){
-                    return true;  
+                return m;
+                //return true;
                 }
             }
         }
-        return false;
+        return null;
     }
-    
 
-    public boolean colisionAbajo(){
-        for(int i = 0; i < ladrillos.size(); i++){
-            if(this.rectangulo().intersects(ladrillos.get(i).rectangulo())){
-                if(this.rectangulo().getMaxY() - 4 == ladrillos.get(i).rectangulo().getMinY()&&
-                    this.rectangulo().getMinX() <= ladrillos.get(i).rectangulo().getMaxX() - 4 &&
-                    this.rectangulo().getMaxX() >= ladrillos.get(i).rectangulo().getMinX() + 4    
+    
+    protected ObjetoDelJuego colisionAbajo(){
+        objetos = estadoDeJuego.getObjetos();
+
+        for(int i = 0; i < objetos.size(); i++){
+
+            ObjetoDelJuego m = objetos.get(i);
+
+            if(m.equals(this)){
+                continue;//si son iguales no colicionan por lo tanto paso a la siguiente iteracion
+            }
+            if(this.rectangulo().intersects(m.rectangulo())){
+                if(this.rectangulo().getMaxY() - Constantes.GRAVEDAD == m.rectangulo().getMinY()&&
+                    this.rectangulo().getMinX() + derecha <= m.rectangulo().getMaxX() - velocidad &&
+                    this.rectangulo().getMaxX() + izquierda >= m.rectangulo().getMinX() + velocidad
                 ){
-                    return true;  
+                return m;
                 }
             }
         }
-        return false;
+        return null;
     }
     
-    
+    public ObjetoDelJuego colisionIzquierda(){
+        objetos = estadoDeJuego.getObjetos();
 
-    public boolean colisionIzquierda(){
-        for(int i = 0; i < ladrillos.size(); i++){
-            if(this.rectangulo().intersects(ladrillos.get(i).rectangulo())){
-                if(this.rectangulo().getMinX() == ladrillos.get(i).rectangulo().getMaxX() - 1 &&
-                    this.rectangulo().getCenterY() - 4 >= ladrillos.get(i).rectangulo().getMinY() &&
-                    this.rectangulo().getCenterY() -4 < ladrillos.get(i).rectangulo().getMaxY() 
-                    ){
-                    return true;  
-                }
+        for(int i = 0; i < objetos.size(); i++){
+
+            ObjetoDelJuego m = objetos.get(i);
+
+            if(m.equals(this)){
+                continue;//si son iguales no colicionan por lo tanto paso a la siguiente iteracion
             }
-        }
-        return false;
-    }
-
-    public boolean colisionArriba(){
-        for(int i = 0; i < ladrillos.size(); i++){
-            if(this.rectangulo().intersects(ladrillos.get(i).rectangulo())){
-                if(this.rectangulo().getMinY() + 4 == ladrillos.get(i).rectangulo().getMaxY() &&
-                    this.rectangulo().getMinX() <= ladrillos.get(i).rectangulo().getMaxX() - 4 &&
-                    this.rectangulo().getMaxX() >= ladrillos.get(i).rectangulo().getMinX() + 4   
+            if(this.rectangulo().intersects(m.rectangulo())){
+                if((this.rectangulo().getMinX() == m.rectangulo().getMaxX() - velocidad ||
+                    this.rectangulo().getMinX() == m.rectangulo().getMaxX() ||
+                    this.rectangulo().getMinX() - velocidad == m.rectangulo().getMaxX()) &&
+                    this.rectangulo().getCenterY() - caida >= m.rectangulo().getMinY() &&
+                    this.rectangulo().getCenterY() - caida < m.rectangulo().getMaxY() 
                 ){
-                    System.out.println("casas");
-                    return true;  
+                return m;
                 }
-                System.out.println(this.rectangulo().getMinY());
-                System.out.println(ladrillos.get(i).rectangulo().getMaxY());
             }
         }
-        return false;
+        return null;
     }
+    
+    public ObjetoDelJuego colisionArriba(){
+        objetos = estadoDeJuego.getObjetos();
+
+        for(int i = 0; i < objetos.size(); i++){
+
+            ObjetoDelJuego m = objetos.get(i);
+
+            if(m.equals(this)){
+                continue;//si son iguales no colicionan por lo tanto paso a la siguiente iteracion
+            }
+            if(this.rectangulo().intersects(m.rectangulo())){
+                if(this.rectangulo().getMinY() + Constantes.GRAVEDAD == m.rectangulo().getMaxY() &&
+                    this.rectangulo().getMinX() +derecha <= m.rectangulo().getMaxX() - velocidad &&
+                    this.rectangulo().getMaxX() +izquierda >= m.rectangulo().getMinX() + velocidad  
+                ){
+                return m;
+                }
+            }
+        }
+        return null;
+    }
+
+    public boolean importa(ObjetoDelJuego a , ObjetoDelJuego b){
+        if(a instanceof Enemigo && b instanceof Enemigo){
+            return false;
+        }
+        
+        return true;
+    }
+
+    public ObjetoDelJuego colisionGeneral(){
+        objetos = estadoDeJuego.getObjetos();
+
+        for(int i = 0; i < objetos.size(); i++){
+
+            ObjetoDelJuego m = objetos.get(i);
+
+            if(m.equals(this)){
+                continue;//si son iguales no colicionan por lo tanto paso a la siguiente iteracion
+            }
+            if(this.rectangulo().intersects(m.rectangulo())){
+                return m;
+                }
+            }
+        return null;
+    }
+
+    
 }
 
