@@ -16,7 +16,7 @@ public abstract class ObjetoQueSemueve extends ObjetoDelJuego {
     private ArrayList<ObjetoDelJuego> objetos;
     int izquierda;
     int derecha;
-    int velocidad;
+    public int velocidad;
     
     public ObjetoQueSemueve(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
         super(posicion, textura, estadoDeJuego);

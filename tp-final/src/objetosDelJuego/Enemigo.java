@@ -7,17 +7,19 @@ import java.awt.image.BufferedImage;
 import estados.EstadoDeJuego;
 import matematicas.Vector2D;
 import nivel.Nivel;
+import sonidos.ReproductorSonidos;
+
 
 public class Enemigo extends ObjetoQueSemueve{
     private Cronometro cronometro = new Cronometro();
     private int movimiento = izquierda; 
-
+    private ReproductorSonidos sonidoAplastar;
 
     public Enemigo(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
         super(posicion, textura, estadoDeJuego, texturaArray, nivel);
         setCaida(Constantes.GRAVEDAD);
         this.velocidad = 1;
-        
+        sonidoAplastar = new ReproductorSonidos("assets/music/aplastar.wav"); 
     }
     
     @Override
@@ -48,7 +50,7 @@ public class Enemigo extends ObjetoQueSemueve{
             setCaida(Constantes.GRAVEDAD);
         }
         
-        //if(!cronometro.estaCorriendo()){
+        if(posicion.getEjeX() <= Constantes.ANCHO){
             posicion.setEjeX(posicion.getEjeX() + movimiento * velocidad);
             if(colisionIzquierda() instanceof Ladrillo){
                 if(!(colisionAbajo() instanceof Ladrillo)){
@@ -64,8 +66,9 @@ public class Enemigo extends ObjetoQueSemueve{
                     movimiento = izquierda ;
                 }
             }
-        //}
+        }
         if(colisionArriba() instanceof Jugador){
+            sonidoAplastar.reproducir();
             destruir();
         }
         //cronometro.arranque(100);

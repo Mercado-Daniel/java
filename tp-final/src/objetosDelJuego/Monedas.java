@@ -12,11 +12,13 @@ public class Monedas extends ObjetoDelJuego{
 
     private BufferedImage[] texturaArray;
     private Cronometro cronometro;
+   
 
     public Monedas(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray){
         super(posicion, textura, estadoDeJuego);
         this.texturaArray = texturaArray;
         cronometro = new Cronometro();
+      
     }
 
     @Override
@@ -31,6 +33,7 @@ public class Monedas extends ObjetoDelJuego{
             }else if(textura == texturaArray[3]){
                 textura = texturaArray[0];
             }
+            
             cronometro.arranque(100);
         }
         

@@ -11,20 +11,29 @@ import nivel.Nivel;
 import entrada.Teclado;
 //import estados.EstadoDeJuego;
 import estados.EstadoDeJuego;
+import sonidos.ReproductorSonidos;
 
 public class Jugador extends ObjetoQueSemueve{
 
     private Cronometro cronometro = new Cronometro();
     private int contador = 0;
     private int monedas = 0;
-
+    private ReproductorSonidos sonidoSaltar,sonidoMoneda,sonidoMuerte,sonidoSaltoDoble,sonidoColisionLadrillo;
+    
     public Jugador(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
         super(posicion, textura, estadoDeJuego, texturaArray, nivel);
+        velocidad = 2;
+        sonidoSaltar = new ReproductorSonidos("assets/music/salto_comun.wav");
+        sonidoSaltoDoble = new ReproductorSonidos("assets/music/salto_doble.wav");
+        sonidoMoneda = new ReproductorSonidos("assets/music/coin.wav");
+        sonidoMuerte = new ReproductorSonidos("assets/music/mariodie.wav");
+        sonidoColisionLadrillo = new ReproductorSonidos("assets/music/colision.wav");
     }
     
     @Override
     public void actualizar(){
         if(Teclado.SALTAR && colisionAbajo() instanceof Ladrillo){
+            sonidoSaltar.reproducir();
             if(!cronometro.estaCorriendo()){
                 if(textura == texturaArray[15] || textura == texturaArray[21]){
                     textura = texturaArray[16];
@@ -39,6 +48,7 @@ public class Jugador extends ObjetoQueSemueve{
         }
         if(colisionAbajo() instanceof Ladrillo) {
             setCaida(0);
+            
         }else{
             setCaida(Constantes.GRAVEDAD);
         }
@@ -48,6 +58,8 @@ public class Jugador extends ObjetoQueSemueve{
             contador++;
             if(colisionArriba() instanceof Ladrillo){
                 posicion.setEjeY(posicion.getEjeY() + caida);
+                // sonidoSaltar.detener();
+                //  sonidoSaltoDoble.reproducir();
                 if (colisionDerecha() instanceof Ladrillo || colisionIzquierda() instanceof Ladrillo) {
                     posicion.setEjeX(posicion.getEjeX());
                 }
@@ -66,10 +78,17 @@ public class Jugador extends ObjetoQueSemueve{
             }
             if(!(colisionDerecha() instanceof Ladrillo)){
 
-                posicion.setEjeX(posicion.getEjeX() + derecha);//movimiento
-            }
+                //posicion.setEjeX(posicion.getEjeX() + derecha);//movimiento
+                if(Teclado.CORRER ){
+                    estadoDeJuego.moverCamaraDerechaCorrer();
+                }else{
+                    estadoDeJuego.moverCamaraDerecha();
+                }
+            }else{
+                sonidoColisionLadrillo.reproducir();}
             cronometro.arranque(100);
             //fin animacion
+          
         }
         if(Teclado.IZQUIERDA){
             if(!cronometro.estaCorriendo()){
@@ -80,15 +99,23 @@ public class Jugador extends ObjetoQueSemueve{
                 }
             }
             if(!(colisionIzquierda() instanceof Ladrillo)){
-                posicion.setEjeX(posicion.getEjeX() + izquierda);
-            }
+                //posicion.setEjeX(posicion.getEjeX() + izquierda);
+                if(Teclado.CORRER ){
+                    estadoDeJuego.moverCamaraIzquierdaCorrer();
+                }else{
+                    estadoDeJuego.moverCamaraIzquierda();
+                }
+            }else{
+            sonidoColisionLadrillo.reproducir();}
             cronometro.arranque(100);
         }
         if(colisionGeneral() instanceof Monedas){
+            sonidoMoneda.reproducir();
             colisionGeneral().destruir();
             monedas += 1;
         }
         if(colisionDerecha() instanceof Enemigo || colisionArriba() instanceof Enemigo || colisionIzquierda() instanceof Enemigo){
+            sonidoMuerte.reproducir(); 
             destruir();
         }
         cronometro.actualizar();

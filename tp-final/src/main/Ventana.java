@@ -9,13 +9,15 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import java.awt.event.*;
 
 import entrada.Teclado;
+import entrada.BotonPausa;
 import estados.EstadoDeJuego;
 import objetosDelJuego.Constantes;
+import objetosDelJuego.Explicacion;
 import graficos.Assets;
-
-
+import sonidos.ReproductorSonidos;
 
 public class Ventana extends JFrame implements Runnable{
 
@@ -23,6 +25,10 @@ public class Ventana extends JFrame implements Runnable{
     private Thread hilo;
     private volatile boolean enFuncionamiento = false; //me indica si el hilo esta en funcionamiento o no
     private Teclado teclado;
+    private BotonPausa botonPausa;
+    private ReproductorSonidos sonidoClick;
+    private ReproductorSonidos sonidoFondo;
+    private ReproductorSonidos sonidoMenu;
 
     //tasa de actualizacion de la pantalla fps
     private double fps = 0;
@@ -35,7 +41,8 @@ public class Ventana extends JFrame implements Runnable{
     //estados
     private EstadoDeJuego estadoDeJuego;
     //imagen del icono
-    private static final ImageIcon icono = new ImageIcon(Ventana.class.getResource("/mario/mario-1.png"));
+    private static final ImageIcon icono = new ImageIcon(Ventana.class.getResource("/imagenes/mario/mario-1.png"));
+
 
     public Ventana(){
         setTitle(Constantes.NOMBRE);//titulo de la ventana
@@ -44,19 +51,50 @@ public class Ventana extends JFrame implements Runnable{
         setResizable(false);//el tamaño de la ventana no se puede reajustar
         setIconImage(icono.getImage());
         setLocationRelativeTo(null);//para centrar la ventana en la pantalla
+        setVisible(true);//muestro la ventana
 
+        sonidoFondo = new ReproductorSonidos("assets/music/fondo2.wav");
         teclado = new Teclado();
         lienzo = new Canvas();
+        botonPausa = new BotonPausa();
         lienzo.setPreferredSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
         lienzo.setMaximumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
         lienzo.setMinimumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
         lienzo.setFocusable(true);//permite obtener entradas del traclado
-
-        add(lienzo);//agrego el lienzo a la ventana
         lienzo.addKeyListener(teclado);//añado el teclado al lienzo
-        setVisible(true);//muestro la ventana
-        
+        lienzo.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE){  
+                sonidoClick = new ReproductorSonidos("assets/music/pause.wav");
+                 BotonPausa.PAUSA = !BotonPausa.PAUSA; 
+                 botonPausa.botonVisible(BotonPausa.PAUSA); 
+                 sonidoClick.reproducir();
+            }
+        }
+         });
 
+        
+         lienzo.addKeyListener(new KeyAdapter() {
+          @Override
+             public void keyPressed(KeyEvent e) {
+                         if (e.getKeyCode() == KeyEvent.VK_L) {
+                            sonidoMenu = new ReproductorSonidos("assets/music/menu.wav");
+                            Explicacion ventanaInfo = new Explicacion(sonidoMenu,sonidoFondo);
+                                BotonPausa.PAUSA = !BotonPausa.PAUSA;
+                           sonidoMenu.reproducir();
+                           sonidoFondo.detener();
+                          }
+                            
+                          
+                    
+                         }
+                     });
+                     
+        botonPausa.botonVisible(BotonPausa.PAUSA);
+
+        add(botonPausa.getBoton()); 
+        add(lienzo);//agrego el lienzo a la ventana
     }
 
     public static void main(String[] args){
@@ -103,7 +141,7 @@ public class Ventana extends JFrame implements Runnable{
             lienzo.createBufferStrategy(3);//triplebuffering
             return;
         }
-
+        
         Graphics graficos = bs.getDrawGraphics();
         //inicia dibujado
         graficos.setColor(Color.BLACK);
@@ -123,28 +161,41 @@ public class Ventana extends JFrame implements Runnable{
         long contador = System.nanoTime();
         double tiempoTranscurrido;
         double delta = 0;//variacion del tiemp entre fotogramas
-
+      
         //requestFocus();//para que tome automaticamente el teclado
         iniciarAssetsYEstados();
-
+        
+         sonidoFondo.reproducir();
         while(enFuncionamiento){
+            
+            if(!BotonPausa.PAUSA){
+                if(!BotonPausa.PAUSA && delta >=1){
+                    delta = 0;
+                    inicioBucle = 0;
+                }
             //para los fps
             inicioBucle = System.nanoTime();
             tiempoTranscurrido = inicioBucle - tiempoActualizacion;
             tiempoActualizacion = inicioBucle;
             delta += tiempoTranscurrido / Constantes.NANOSEGUNDOS_POR_FPS;
 
+            
             if(delta >= 1){
                 actualizar();
                 dibujar();
                 delta--;//redusco delta para reiniciar el cronometraje del siguiente fotograma
                 fps++;
             }
-            if(System.nanoTime() - contador > Constantes.NANOSEGUNDOS_POR_SEGUNDO){//me permite mostrar los fps en el borde superior de la ventana
-                setTitle(Constantes.NOMBRE + " || FPS: " + fps);
+
+            if(System.nanoTime() - contador > Constantes.NANOSEGUNDOS_POR_SEGUNDO){
+                //me permite mostrar los fps en el borde superior de la ventana
+                setTitle( Constantes.NOMBRE + " || FPS: " + fps);
                 fps = 0;
                 contador = System.nanoTime();
             }
+
+          
         }
-    }
+     }
+   }
 }
