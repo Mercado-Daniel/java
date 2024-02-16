@@ -29,9 +29,11 @@ public class ReproductorSonidos {
         }
     }
 
-    // public void cerrar() {
-    //     if (clip != null) {
-    //         clip.close();
-    //     }
-    // }
+    public void reproducirInfi() {
+        if (clip != null) {
+            clip.setFramePosition(0);
+            clip.loop(-1);
+        }
+    }
+
 }

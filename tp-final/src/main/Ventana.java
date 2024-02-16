@@ -82,7 +82,7 @@ public class Ventana extends JFrame implements Runnable{
                             sonidoMenu = new ReproductorSonidos("assets/music/menu.wav");
                             Explicacion ventanaInfo = new Explicacion(sonidoMenu,sonidoFondo);
                                 BotonPausa.PAUSA = !BotonPausa.PAUSA;
-                           sonidoMenu.reproducir();
+                           sonidoMenu.reproducirInfi();
                            sonidoFondo.detener();
                           }
                             
@@ -165,7 +165,7 @@ public class Ventana extends JFrame implements Runnable{
         //requestFocus();//para que tome automaticamente el teclado
         iniciarAssetsYEstados();
         
-         sonidoFondo.reproducir();
+         sonidoFondo.reproducirInfi();
         while(enFuncionamiento){
             
             if(!BotonPausa.PAUSA){

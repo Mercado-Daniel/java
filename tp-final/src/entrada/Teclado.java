@@ -19,17 +19,12 @@ public class Teclado implements KeyListener  {
     }
 
     public void actualizar(){//asigno las letras a las vriable si estas son presionados su valor sera true
-        IZQUIERDA = teclas[KeyEvent.VK_A];
-        DERECHA = teclas[KeyEvent.VK_D];
+        IZQUIERDA = teclas[KeyEvent.VK_A] || teclas[KeyEvent.VK_LEFT];
+        DERECHA = teclas[KeyEvent.VK_D] || teclas[KeyEvent.VK_RIGHT];
         SALTAR = teclas[KeyEvent.VK_SPACE];
         //ATACAR = teclas[KeyEvent.VK_J];
         CORRER = teclas[KeyEvent.VK_SHIFT];
-          
-
     }
-
-   
-
     
     @Override
     public void keyPressed(KeyEvent e){

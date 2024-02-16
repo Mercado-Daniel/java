@@ -42,7 +42,7 @@ public class Explicacion  extends JFrame{
          BotonPausa.PAUSA =!BotonPausa.PAUSA;
          dispose(); // Cierra la ventana emergente
          sonidoMenu.detener();
-         sonidoFondo.reproducir();
+         sonidoFondo.reproducirInfi();
         }
     });
 
