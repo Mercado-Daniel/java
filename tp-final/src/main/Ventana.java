@@ -26,7 +26,7 @@ public class Ventana extends JFrame implements Runnable{
     private volatile boolean enFuncionamiento = false; //me indica si el hilo esta en funcionamiento o no
     private Teclado teclado;
     private BotonPausa botonPausa;
-    private ReproductorSonidos sonidoClick;
+    private ReproductorSonidos sonidoPausa;
     private ReproductorSonidos sonidoFondo;
     private ReproductorSonidos sonidoMenu;
 
@@ -54,9 +54,11 @@ public class Ventana extends JFrame implements Runnable{
         setVisible(true);//muestro la ventana
 
         sonidoFondo = new ReproductorSonidos("assets/music/fondo2.wav");
+        sonidoPausa = new ReproductorSonidos("assets/music/pause.wav");
         teclado = new Teclado();
-        lienzo = new Canvas();
         botonPausa = new BotonPausa();
+        lienzo = new Canvas();
+        
         lienzo.setPreferredSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
         lienzo.setMaximumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
         lienzo.setMinimumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
@@ -66,10 +68,9 @@ public class Ventana extends JFrame implements Runnable{
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE){  
-                sonidoClick = new ReproductorSonidos("assets/music/pause.wav");
                  BotonPausa.PAUSA = !BotonPausa.PAUSA; 
                  botonPausa.botonVisible(BotonPausa.PAUSA); 
-                 sonidoClick.reproducir();
+                 sonidoPausa.reproducir();
             }
         }
          });
@@ -82,14 +83,13 @@ public class Ventana extends JFrame implements Runnable{
                             sonidoMenu = new ReproductorSonidos("assets/music/menu.wav");
                             Explicacion ventanaInfo = new Explicacion(sonidoMenu,sonidoFondo);
                                 BotonPausa.PAUSA = !BotonPausa.PAUSA;
-                           sonidoMenu.reproducirInfi();
+                           sonidoMenu.reproducirInf();
                            sonidoFondo.detener();
                           }
-                            
-                          
-                    
                          }
                      });
+                     
+
                      
         botonPausa.botonVisible(BotonPausa.PAUSA);
 
@@ -124,15 +124,7 @@ public class Ventana extends JFrame implements Runnable{
     private void actualizar(){
         teclado.actualizar();
         estadoDeJuego.actualizar();
-        /*if(teclado.IZQUIERDA){
-            
-        }
-        if(teclado.DERECHA){
-            
-        }
-        if(teclado.SALTAR){
-            
-        }*/
+
     }
 
     private void dibujar(){
@@ -144,8 +136,11 @@ public class Ventana extends JFrame implements Runnable{
         
         Graphics graficos = bs.getDrawGraphics();
         //inicia dibujado
-        graficos.setColor(Color.BLACK);
+        graficos.setColor(Color.CYAN);
+        
+        //graficos.drawImage()
         graficos.fillRect(0, 0, Constantes.ANCHO, Constantes.ALTO);
+        
         estadoDeJuego.dibujar(graficos);
         //termina dibujado
         graficos.dispose();//libera la memoria de graficos
@@ -165,7 +160,7 @@ public class Ventana extends JFrame implements Runnable{
         //requestFocus();//para que tome automaticamente el teclado
         iniciarAssetsYEstados();
         
-         sonidoFondo.reproducirInfi();
+         sonidoFondo.reproducirInf();
         while(enFuncionamiento){
             
             if(!BotonPausa.PAUSA){

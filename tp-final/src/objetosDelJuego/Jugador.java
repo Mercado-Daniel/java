@@ -2,27 +2,25 @@ package objetosDelJuego;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-//import java.util.ArrayList;
+
 
 import matematicas.Vector2D;
 import nivel.Nivel;
-//import nivel.Laberinto;
-//import niveles.NivelUno;
 import entrada.Teclado;
-//import estados.EstadoDeJuego;
 import estados.EstadoDeJuego;
 import sonidos.ReproductorSonidos;
 
 public class Jugador extends ObjetoQueSemueve{
 
     private Cronometro cronometro = new Cronometro();
+    private Cronometro inputLag = new Cronometro();
     private int contador = 0;
     private int monedas = 0;
     private ReproductorSonidos sonidoSaltar,sonidoMoneda,sonidoMuerte,sonidoSaltoDoble,sonidoColisionLadrillo;
     
     public Jugador(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
         super(posicion, textura, estadoDeJuego, texturaArray, nivel);
-        velocidad = 2;
+        velocidad = 6;
         sonidoSaltar = new ReproductorSonidos("assets/music/salto_comun.wav");
         sonidoSaltoDoble = new ReproductorSonidos("assets/music/salto_doble.wav");
         sonidoMoneda = new ReproductorSonidos("assets/music/coin.wav");
@@ -44,7 +42,6 @@ public class Jugador extends ObjetoQueSemueve{
             }
             cronometro.arranque(100);
             contador = 0;
-            //caida = Constantes.GRAVEDAD;
         }
         if(colisionAbajo() instanceof Ladrillo) {
             setCaida(0);
@@ -67,8 +64,9 @@ public class Jugador extends ObjetoQueSemueve{
         }else{
             posicion.setEjeY(posicion.getEjeY() + caida);
         }
-        if(Teclado.DERECHA){
+        if(Teclado.DERECHA && !inputLag.estaCorriendo()){
             //animacion
+            inputLag.arranque(60);
             if(!cronometro.estaCorriendo()){
                 if(textura == texturaArray[0]){
                     textura = texturaArray[6];
@@ -77,20 +75,35 @@ public class Jugador extends ObjetoQueSemueve{
                 }
             }
             if(!(colisionDerecha() instanceof Ladrillo)){
-
-                //posicion.setEjeX(posicion.getEjeX() + derecha);//movimiento
-                if(Teclado.CORRER ){
-                    estadoDeJuego.moverCamaraDerechaCorrer();
-                }else{
-                    estadoDeJuego.moverCamaraDerecha();
-                }
+                    if(Teclado.CORRER ){
+                        if(colisionCentro() instanceof Ladrillo){
+                            posicion.setEjeX(posicion.getEjeX() + izquierda * 16);
+                        }else{
+                            if(posicion.getEjeX() <= Constantes.ANCHO/2){
+                                posicion.setEjeX(posicion.getEjeX() + derecha * 10);
+                            }else{
+                                estadoDeJuego.moverCamaraDerechaCorrer();
+                            }
+                        }
+                    }else{
+                        if(colisionCentro() instanceof Ladrillo){
+                            posicion.setEjeX(posicion.getEjeX() + izquierda * 16);
+                        }else{
+                            if(posicion.getEjeX() <= Constantes.ANCHO/2){
+                                posicion.setEjeX(posicion.getEjeX() + derecha * velocidad);
+                            }else{
+                                estadoDeJuego.moverCamaraDerecha();
+                            }
+                        }
+                    }
+                
             }else{
                 sonidoColisionLadrillo.reproducir();}
             cronometro.arranque(100);
             //fin animacion
           
         }
-        if(Teclado.IZQUIERDA){
+        if(Teclado.IZQUIERDA && !inputLag.estaCorriendo()){
             if(!cronometro.estaCorriendo()){
                 if(textura == texturaArray[15]){
                     textura = texturaArray[21];
@@ -98,26 +111,47 @@ public class Jugador extends ObjetoQueSemueve{
                     textura = texturaArray[15];
                 }
             }
+            inputLag.arranque(60);
             if(!(colisionIzquierda() instanceof Ladrillo)){
-                //posicion.setEjeX(posicion.getEjeX() + izquierda);
                 if(Teclado.CORRER ){
-                    estadoDeJuego.moverCamaraIzquierdaCorrer();
+                    //estadoDeJuego.moverCamaraIzquierdaCorrer();
+                    if(colisionCentro() instanceof Ladrillo){
+                        posicion.setEjeX(posicion.getEjeX() + derecha * 16);
+                    }else{
+                        posicion.setEjeX(posicion.getEjeX() + izquierda * 10);
+                    }
                 }else{
-                    estadoDeJuego.moverCamaraIzquierda();
+                    //estadoDeJuego.moverCamaraIzquierda();
+                    if(posicion.getEjeX() > 0){
+                        if(colisionCentro() instanceof Ladrillo){
+                            posicion.setEjeX(posicion.getEjeX() + derecha * 16);
+                        }else{
+                            posicion.setEjeX(posicion.getEjeX() + izquierda * velocidad);
+                        }
+                    }
                 }
             }else{
             sonidoColisionLadrillo.reproducir();}
             cronometro.arranque(100);
         }
+        inputLag.actualizar();
         if(colisionGeneral() instanceof Monedas){
             sonidoMoneda.reproducir();
             colisionGeneral().destruir();
             monedas += 1;
         }
-        if(colisionDerecha() instanceof Enemigo || colisionArriba() instanceof Enemigo || colisionIzquierda() instanceof Enemigo){
+        if(colisionDerecha() instanceof Enemigo || colisionArriba() instanceof Enemigo || colisionIzquierda() instanceof Enemigo || colisionCentro() instanceof Enemigo){
             sonidoMuerte.reproducir(); 
             destruir();
         }
+        if(posicion.getEjeY() >= Constantes.ALTO - 64){
+            sonidoMuerte.reproducir(); 
+            destruir();
+        }
+        if(posicion.getEjeX() <= 0){
+            posicion.setEjeX(posicion.getEjeX() + derecha * 14);
+        }
+
         cronometro.actualizar();
         System.out.println(monedas);
     }

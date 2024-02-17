@@ -2,7 +2,7 @@ package objetosDelJuego;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-//import java.util.List;
+
 
 import estados.EstadoDeJuego;
 import matematicas.Vector2D;
@@ -22,7 +22,6 @@ public abstract class ObjetoQueSemueve extends ObjetoDelJuego {
         super(posicion, textura, estadoDeJuego);
         this.texturaArray = texturaArray;
         this.nivel = nivel;
-        //this.estadoDeJuego = estadoDeJuego;
         setCaida(Constantes.GRAVEDAD);
         izquierda = -1;
         derecha = + 1;
@@ -48,7 +47,7 @@ public abstract class ObjetoQueSemueve extends ObjetoDelJuego {
                     this.rectangulo().getCenterY() -caida < m.rectangulo().getMaxY() 
                     ){
                 return m;
-                //return true;
+                
                 }
             }
         }
@@ -149,6 +148,24 @@ public abstract class ObjetoQueSemueve extends ObjetoDelJuego {
         return null;
     }
 
+    public ObjetoDelJuego colisionCentro(){
+        objetos = estadoDeJuego.getObjetos();
+
+        for(int i = 0; i < objetos.size(); i++){
+
+            ObjetoDelJuego m = objetos.get(i);
+
+            if(m.equals(this)){
+                continue;//si son iguales no colicionan por lo tanto paso a la siguiente iteracion
+            }
+            if(this.rectangulito().intersects(m.rectangulito())){
+                return m;
+                }
+            }
+        return null;
+    }
+
+    
+
     
 }
-

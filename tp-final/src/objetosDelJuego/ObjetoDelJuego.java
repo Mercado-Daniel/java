@@ -45,6 +45,10 @@ public abstract class ObjetoDelJuego {//es una clase abstracta
         return new Rectangle((int)posicion.getEjeX(), (int)posicion.getEjeY(), ancho , alto);
     }
 
+    public Rectangle rectangulito(){
+        return new Rectangle((int)posicion.getEjeX() + (ancho/2), (int)posicion.getEjeY() + (alto/2), ancho/2 , alto/2);
+    }
+
     protected void destruir(){
         estadoDeJuego.getObjetos().remove(this);//destruye este objeto
     }

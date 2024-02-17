@@ -2,7 +2,7 @@ package estados;
 
 import java.awt.Graphics;
 import java.util.ArrayList;
-//import java.util.List;
+
 
 import graficos.Assets;
 import matematicas.Vector2D;
@@ -20,7 +20,7 @@ public class EstadoDeJuego {
 
     public EstadoDeJuego(){
         //instancio el jugador y le asigno su posicion y el asset a utilizar, en el futuro se debe implementar una animacion
-        jugador = new Jugador(new Vector2D(96, 96), Assets.jugadorMario[0], this,Assets.jugadorMario, nivel);
+        jugador = new Jugador(new Vector2D(96, 500), Assets.jugadorMario[0], this,Assets.jugadorMario, nivel);
         //nivelUno = new NivelUno(jugador);
         objetos = nivel.getLadrillos();
         objetos.add(jugador);
@@ -32,25 +32,14 @@ public class EstadoDeJuego {
             objetos.get(i).actualizar();
         }
         //System.out.println(colision());
-        /*if (colision()) {
-            jugador.setCaida(0);
-        }else{
-            jugador.setCaida(Constantes.GRAVEDAD);
-        }*/
     }
 
     public void dibujar(Graphics graficos){
         
-        //jugador.dibujar(graficos);//dibujo el jugador en el estado de juego 
+        
         for(int i = 0; i < objetos.size(); i++){
             objetos.get(i).dibujar(graficos);
         }
-        //nivel.dibujar(graficos);
-        
-        //for(int i = 0; i < nivel.getLadrillos().size(); i++){
-            //nivel.getLadrillos().get(i).dibujar(graficos);
-            //System.out.println(i);
-        //}
     }
 
     public ArrayList<ObjetoDelJuego> getObjetos(){

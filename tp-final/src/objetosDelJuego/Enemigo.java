@@ -71,7 +71,7 @@ public class Enemigo extends ObjetoQueSemueve{
             sonidoAplastar.reproducir();
             destruir();
         }
-        //cronometro.arranque(100);
+        
         
         cronometro.actualizar();
     }

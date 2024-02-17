@@ -19,20 +19,20 @@ public class ReproductorSonidos {
     public void reproducir() {
         if (clip != null) {
             clip.setFramePosition(0);
-            clip.start();
+             clip.start();
+            
+        }
+    }
+    public void reproducirInf() {
+        if (clip != null) {
+            clip.setFramePosition(0);
+            clip.loop(-1);
         }
     }
 
     public void detener() {
         if (clip != null) {
             clip.stop();
-        }
-    }
-
-    public void reproducirInfi() {
-        if (clip != null) {
-            clip.setFramePosition(0);
-            clip.loop(-1);
         }
     }
 

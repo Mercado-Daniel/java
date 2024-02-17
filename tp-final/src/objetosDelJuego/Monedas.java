@@ -4,7 +4,6 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import estados.EstadoDeJuego;
-//import graficos.Assets;
 import matematicas.Vector2D;
 
 

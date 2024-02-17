@@ -9,8 +9,9 @@ public class Assets {
     public static BufferedImage[] jugadorMario = new BufferedImage[30];
     public static BufferedImage[] enemigo = new BufferedImage[4];
     public static BufferedImage[] ladrillo = new BufferedImage[4];
-    public static BufferedImage[] fondo = new BufferedImage[3];
+    //public static BufferedImage[] fondo = new BufferedImage[3];
     public static BufferedImage[] moneda = new BufferedImage[4];
+    public static BufferedImage fondo ;
     
 
     public static void iniciar(){
@@ -19,8 +20,7 @@ public class Assets {
             ladrillo = cargarSpriteDesdeHoja("/imagenes/bricks/brick.gif", 32, 128, 32, 32, 4);
             enemigo = cargarSpriteDesdeHoja("/imagenes/enemigos/woopa.png", 128, 32, 32, 32, 4);
             moneda = cargarSpriteDesdeHoja("/imagenes/coins/coin3.gif", 32, 128, 32, 32, 4);
-            //sprite1 = jugadorMario;
-            //sprite1 = cargarSpriteDesdeHoja("/enemigos/sprite.png", 240, 240, 48, 48, 25);
+            fondo = cargarSprite("/imagenes/Backgrounds/mountains_a.png");
 
         } catch (Exception e) {
             e.printStackTrace();
