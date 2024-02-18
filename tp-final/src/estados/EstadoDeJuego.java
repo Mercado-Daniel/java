@@ -7,11 +7,13 @@ import java.util.ArrayList;
 import graficos.Assets;
 import matematicas.Vector2D;
 import nivel.Nivel;
+import objetosDelJuego.Cronometro;
 import objetosDelJuego.Jugador;
 import objetosDelJuego.ObjetoDelJuego;
 
 public class EstadoDeJuego {
     //creo un jugador en el estado de juego
+    private Cronometro cronometro = new Cronometro();
     private Jugador jugador;
     private Nivel nivel = new Nivel(this);
     private ArrayList<ObjetoDelJuego> objetos = new ArrayList<ObjetoDelJuego>();//almacena todos los objetos
@@ -34,12 +36,33 @@ public class EstadoDeJuego {
         //System.out.println(colision());
     }
 
+    public void reiniciar(){
+       
+        if(objetos.contains(jugador)){
+            jugador.setPosicion(new Vector2D(96, 400));
+        }else{
+            jugador = new Jugador(new Vector2D(96, 500), Assets.jugadorMario[0], this,Assets.jugadorMario, nivel);
+        }
+        for(int i = 0; i < objetos.size(); i++){
+            objetos.remove(objetos.get(i));
+        }
+        //instancio el jugador y le asigno su posicion y el asset a utilizar, en el futuro se debe implementar una animacion
+        nivel = new Nivel(this);
+        //nivelUno = new NivelUno(jugador);
+        objetos = nivel.getLadrillos();
+        objetos.add(jugador);
+        //objetos.add(enemigo);
+    }
+
     public void dibujar(Graphics graficos){
         
         
         for(int i = 0; i < objetos.size(); i++){
             objetos.get(i).dibujar(graficos);
         }
+        dibujarPuntanje(graficos);
+        dibujarMonedas(graficos);
+        dibujarVidas(graficos);
     }
 
     public ArrayList<ObjetoDelJuego> getObjetos(){
@@ -80,7 +103,41 @@ public class EstadoDeJuego {
         }
     }
 
+    private void dibujarPuntanje(Graphics graficos){
+        Vector2D posicion = new Vector2D(650, 25);
+        String puntajeAString = Integer.toString(jugador.getPuntaje());
+        for(int i=0; i < puntajeAString.length(); i++){
+            graficos.drawImage(Assets.numeros[Integer.parseInt(puntajeAString.substring(i, i + 1))], 
+                (int)posicion.getEjeX(), 
+                (int)posicion.getEjeY(), null);//de esta foma dibujo el asset correspondiente al numero
+            posicion.setEjeX(posicion.getEjeX() + 20);//asi los numeros no se dibujan uno arriba del otro
+        }
+    }
 
-    //public boolean colision(){}
+    private void dibujarMonedas(Graphics graficos){
+        Vector2D posicionMoneda = new Vector2D(350, 18);
+        graficos.drawImage(Assets.moneda[0], (int)posicionMoneda.getEjeX(), (int)posicionMoneda.getEjeY() , null);
+        Vector2D posicion = new Vector2D(380, 25);
+        String monedaAString = Integer.toString(jugador.getMonedas());
+        for(int i=0; i < monedaAString.length(); i++){
+            graficos.drawImage(Assets.numeros[Integer.parseInt(monedaAString.substring(i, i + 1))], 
+                (int)posicion.getEjeX(), 
+                (int)posicion.getEjeY(), null);//de esta foma dibujo el asset correspondiente al numero
+            posicion.setEjeX(posicion.getEjeX() + 20);//asi los numeros no se dibujan uno arriba del otro
+        }
+    }
+
+    private void dibujarVidas(Graphics graficos){
+        Vector2D posicionVida = new Vector2D(4, 25);
+        graficos.drawImage(Assets.vida, (int)posicionVida.getEjeX(), (int)posicionVida.getEjeY() , null);
+        Vector2D posicion = new Vector2D(20, 25);
+        String vidaAString = Integer.toString(jugador.getVidas());
+        for(int i=0; i < vidaAString.length(); i++){
+            graficos.drawImage(Assets.numeros[Integer.parseInt(vidaAString.substring(i, i + 1))], 
+                (int)posicion.getEjeX(), 
+                (int)posicion.getEjeY(), null);//de esta foma dibujo el asset correspondiente al numero
+            posicion.setEjeX(posicion.getEjeX() + 20);//asi los numeros no se dibujan uno arriba del otro
+        }
+    }
 
 }

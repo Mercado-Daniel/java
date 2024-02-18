@@ -136,7 +136,7 @@ public class Ventana extends JFrame implements Runnable{
         
         Graphics graficos = bs.getDrawGraphics();
         //inicia dibujado
-        graficos.setColor(Color.CYAN);
+       graficos.setColor(Color.CYAN);
         
         //graficos.drawImage()
         graficos.fillRect(0, 0, Constantes.ANCHO, Constantes.ALTO);

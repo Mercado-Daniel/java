@@ -9,10 +9,19 @@ public class Assets {
     public static BufferedImage[] jugadorMario = new BufferedImage[30];
     public static BufferedImage[] enemigo = new BufferedImage[4];
     public static BufferedImage[] ladrillo = new BufferedImage[4];
-    //public static BufferedImage[] fondo = new BufferedImage[3];
+    public static BufferedImage[] cajaPregunta = new BufferedImage[4];
     public static BufferedImage[] moneda = new BufferedImage[4];
+    public static BufferedImage[] numeros = new BufferedImage[11];
     public static BufferedImage fondo ;
-    
+    public static BufferedImage ladrilloIndestructible;
+    public static BufferedImage nube;
+    public static BufferedImage castillo;
+    public static BufferedImage colina;
+    public static BufferedImage cajaVacia;
+    public static BufferedImage vida;
+    public static BufferedImage canoGrande;
+    public static BufferedImage canoMediano;
+    public static BufferedImage canoChico;
 
     public static void iniciar(){
         try {
@@ -20,8 +29,23 @@ public class Assets {
             ladrillo = cargarSpriteDesdeHoja("/imagenes/bricks/brick.gif", 32, 128, 32, 32, 4);
             enemigo = cargarSpriteDesdeHoja("/imagenes/enemigos/woopa.png", 128, 32, 32, 32, 4);
             moneda = cargarSpriteDesdeHoja("/imagenes/coins/coin3.gif", 32, 128, 32, 32, 4);
-            fondo = cargarSprite("/imagenes/Backgrounds/mountains_a.png");
+            cajaPregunta = cargarSpriteDesdeHoja("/imagenes/boxes/surpriseBox.gif", 32, 128, 32, 32, 4);
 
+            fondo = cargarSprite("/imagenes/Backgrounds/mountains_a.png");
+            ladrilloIndestructible = cargarSprite("/imagenes/bricks/ladrillosIndestructibles.png");
+            nube = cargarSprite("/imagenes/tiles/nubes.png");
+            castillo = cargarSprite("/imagenes/tiles/castillo.png");
+            colina = cargarSprite("/imagenes/tiles/colina.png");
+            cajaVacia = cargarSprite("/imagenes/boxes/voidBox.gif");
+            vida = cargarSprite("/imagenes/numeros/mario-1.png");
+            
+            canoChico = cargarSprite("/imagenes/tiles/canoChico.png");
+            canoMediano = cargarSprite("/imagenes/tiles/canoMediano.png");
+            canoGrande = cargarSprite("/imagenes/tiles/canoGrande.png");
+            
+            for(int i = 0; i < numeros.length; i++){
+                numeros[i] = cargarSprite("/imagenes/numeros/"+i+".png");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -53,5 +53,9 @@ public abstract class ObjetoDelJuego {//es una clase abstracta
         estadoDeJuego.getObjetos().remove(this);//destruye este objeto
     }
 
+    protected void Crear(){
+        estadoDeJuego.getObjetos().add(this);
+    }
+
 
 }
