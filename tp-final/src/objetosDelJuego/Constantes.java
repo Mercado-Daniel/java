@@ -20,4 +20,8 @@ public class Constantes {
     //caida
     public final static int GRAVEDAD = 4;
 
+    //tiles
+    public final static int ANCHO_TILE = 32;
+    public final static int ALTO_TILE = 32;
+
 }
