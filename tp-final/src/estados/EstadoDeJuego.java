@@ -1,5 +1,6 @@
 package estados;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
@@ -59,6 +60,11 @@ public class EstadoDeJuego {
         
         for(int i = 0; i < objetos.size(); i++){
             objetos.get(i).dibujar(graficos);
+            /*graficos.setColor(Color.BLACK);
+            graficos.drawRect((int)objetos.get(i).rectangulito().getMinX(),(int)objetos.get(i).rectangulito().getMinY(), (int)objetos.get(i).rectangulito().getMaxX(), (int)objetos.get(i).rectangulito().getMaxY());
+
+            graficos.setColor(Color.RED);
+            graficos.drawRect((int)objetos.get(i).rectangulo().getMinX(),(int)objetos.get(i).rectangulo().getMinY(), (int)objetos.get(i).rectangulo().getMaxX(), (int)objetos.get(i).rectangulo().getMaxY());*/
         }
         dibujarPuntanje(graficos);
         dibujarMonedas(graficos);

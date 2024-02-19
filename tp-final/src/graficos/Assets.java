@@ -12,6 +12,7 @@ public class Assets {
     public static BufferedImage[] cajaPregunta = new BufferedImage[4];
     public static BufferedImage[] moneda = new BufferedImage[4];
     public static BufferedImage[] numeros = new BufferedImage[11];
+    public static BufferedImage[] banderita = new BufferedImage[5];
     public static BufferedImage fondo ;
     public static BufferedImage ladrilloIndestructible;
     public static BufferedImage nube;
@@ -22,6 +23,7 @@ public class Assets {
     public static BufferedImage canoGrande;
     public static BufferedImage canoMediano;
     public static BufferedImage canoChico;
+    public static BufferedImage poste;
 
     public static void iniciar(){
         try {
@@ -30,6 +32,7 @@ public class Assets {
             enemigo = cargarSpriteDesdeHoja("/imagenes/enemigos/woopa.png", 128, 32, 32, 32, 4);
             moneda = cargarSpriteDesdeHoja("/imagenes/coins/coin3.gif", 32, 128, 32, 32, 4);
             cajaPregunta = cargarSpriteDesdeHoja("/imagenes/boxes/surpriseBox.gif", 32, 128, 32, 32, 4);
+            banderita = cargarSpriteDesdeHoja("/imagenes/tiles/banderita.png", 361, 374, 72, 374, 5);
 
             fondo = cargarSprite("/imagenes/Backgrounds/mountains_a.png");
             ladrilloIndestructible = cargarSprite("/imagenes/bricks/ladrillosIndestructibles.png");
@@ -42,6 +45,7 @@ public class Assets {
             canoChico = cargarSprite("/imagenes/tiles/canoChico.png");
             canoMediano = cargarSprite("/imagenes/tiles/canoMediano.png");
             canoGrande = cargarSprite("/imagenes/tiles/canoGrande.png");
+            poste = cargarSprite("/imagenes/tiles/poste.png");
             
             for(int i = 0; i < numeros.length; i++){
                 numeros[i] = cargarSprite("/imagenes/numeros/"+i+".png");
