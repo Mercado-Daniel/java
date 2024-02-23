@@ -38,10 +38,7 @@ public class LaCaja extends Ladrillo{
         }
         cronometro.actualizar();
     }
-    /*@Override
-    public void destruir(){
-        golpeado = true;
-    }*/
+    
 
     public boolean getGolpeado(){
         return golpeado;

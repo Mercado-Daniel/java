@@ -20,6 +20,7 @@ public class Jugador extends ObjetoQueSemueve{
     private int puntaje = 0;
     private int vidas = 5;
     private boolean fin = false;
+    private boolean chocaInvisible = false;
     private ReproductorSonidos sonidoSaltar,sonidoMoneda,sonidoMuerte,sonidoSaltoDoble,sonidoColisionLadrillo;
     
     public Jugador(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
@@ -60,6 +61,10 @@ public class Jugador extends ObjetoQueSemueve{
             if(colisionArriba() instanceof Ladrillo){
                 if(colisionArriba() instanceof LaCaja ){
                     chocaCaja();
+                }
+                if(colisionArriba() instanceof CajaInvisible && !chocaInvisible){
+                    chocaInvisible = true;
+                    chocaInvisible();
                 }
                 posicion.setEjeY(posicion.getEjeY() + caida);
                 // sonidoSaltar.detener();
@@ -163,6 +168,7 @@ public class Jugador extends ObjetoQueSemueve{
             vidas = 0;
             muerte();
         }
+        
 
         cronometro.actualizar();
         System.out.println(monedas);
@@ -175,10 +181,27 @@ public class Jugador extends ObjetoQueSemueve{
 
     private void chocaCaja(){
         sonidoMoneda.reproducir();
-        ladrilloIndestructible = new LadrilloIndestructible(new Vector2D(colisionArriba().posicion.getEjeX(), colisionArriba().posicion.getEjeY()), Assets.cajaVacia, estadoDeJuego);
+        ladrilloIndestructible = new LadrilloIndestructible(
+            new Vector2D(colisionArriba().posicion.getEjeX(), colisionArriba().posicion.getEjeY()), 
+            Assets.cajaVacia, 
+            estadoDeJuego);
         ladrilloIndestructible.Crear();
         colisionArriba().destruir();
         monedas += 1;
+    }
+
+    private void chocaInvisible(){
+        Hongo hongo = new Hongo(
+        new Vector2D(
+            colisionArriba().posicion.getEjeX(), 
+            colisionArriba().posicion.getEjeY() - 32),
+        Assets.hongoVida, 
+        estadoDeJuego,
+        nivel,
+        "vida");
+        hongo.Crear();
+        //colisionArriba().destruir();
+        
     }
 
     public int getPuntaje(){
@@ -191,6 +214,10 @@ public class Jugador extends ObjetoQueSemueve{
 
     public int getVidas(){
         return vidas;
+    }
+
+    public void setVidas(){
+        vidas += 1;
     }
 
     private void muerte(){

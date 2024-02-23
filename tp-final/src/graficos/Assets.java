@@ -24,6 +24,9 @@ public class Assets {
     public static BufferedImage canoMediano;
     public static BufferedImage canoChico;
     public static BufferedImage poste;
+    public static BufferedImage hongo;
+    public static BufferedImage hongoVida;
+    public static BufferedImage invisible;
 
     public static void iniciar(){
         try {
@@ -46,6 +49,9 @@ public class Assets {
             canoMediano = cargarSprite("/imagenes/tiles/canoMediano.png");
             canoGrande = cargarSprite("/imagenes/tiles/canoGrande.png");
             poste = cargarSprite("/imagenes/tiles/poste.png");
+            hongo = cargarSprite("/imagenes/items/hongo.png");
+            hongoVida = cargarSprite("/imagenes/items/hongovida.png");
+            invisible = cargarSprite("/imagenes/items/invisible.png");
             
             for(int i = 0; i < numeros.length; i++){
                 numeros[i] = cargarSprite("/imagenes/numeros/"+i+".png");

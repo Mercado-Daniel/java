@@ -146,4 +146,8 @@ public class EstadoDeJuego {
         }
     }
 
+    public Jugador getJugador(){
+        return jugador;
+    }
+
 }

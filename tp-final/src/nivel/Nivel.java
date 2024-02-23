@@ -12,6 +12,7 @@ import graficos.Assets;
 import matematicas.Vector2D;
 import objetosDelJuego.Adornos;
 import objetosDelJuego.Banderita;
+import objetosDelJuego.CajaInvisible;
 import objetosDelJuego.Constantes;
 import objetosDelJuego.Enemigo;
 import objetosDelJuego.LaCaja;
@@ -35,6 +36,7 @@ public class Nivel {
     private Banderita banderita;
     private LadrilloIndestructible ladrilloIndestructible;
     private LaCaja laCaja;
+    private CajaInvisible cajaInvisible;
     private ArrayList<ObjetoDelJuego> ladrillos = new ArrayList<ObjetoDelJuego>();
 
     public Nivel(EstadoDeJuego estadoDeJuego){
@@ -117,6 +119,10 @@ public class Nivel {
                 if(mapa[fila][columna] == 4){
                     ladrilloIndestructible = new LadrilloIndestructible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.ladrilloIndestructible, estadoDeJuego);
                     ladrillos.add(ladrilloIndestructible);
+                }
+                if(mapa[fila][columna] == 5){
+                    cajaInvisible = new CajaInvisible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.invisible, estadoDeJuego);
+                    ladrillos.add(cajaInvisible);
                 }
                 if(mapa[fila][columna] == 9){
                     laCaja = new LaCaja(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.cajaPregunta[0], estadoDeJuego, Assets.cajaPregunta, Assets.cajaVacia);
