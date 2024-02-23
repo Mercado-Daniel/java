@@ -9,6 +9,8 @@ import java.awt.image.BufferStrategy;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
 import java.awt.event.*;
 
 import entrada.Teclado;
@@ -98,7 +100,11 @@ public class Ventana extends JFrame implements Runnable{
     }
 
     public static void main(String[] args){
-        new Ventana().iniciar();
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new Ventana().iniciar();
+            }
+        });
     }
 
     public synchronized void iniciar(){
