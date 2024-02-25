@@ -30,7 +30,7 @@ public class Nivel {
     private LadrilloDestructible ladrillo;
     private Enemigo enemigo;
     private EstadoDeJuego estadoDeJuego;
-    private int[][] mapa = obtienemapa("assets/niveles/nivel-1.txt");
+    private int[][] mapa;// = obtienemapa("assets/niveles/nivel-1.txt");
     private Monedas moneda;
     private Adornos adorno;
     private Banderita banderita;
@@ -39,8 +39,9 @@ public class Nivel {
     private CajaInvisible cajaInvisible;
     private ArrayList<ObjetoDelJuego> ladrillos = new ArrayList<ObjetoDelJuego>();
 
-    public Nivel(EstadoDeJuego estadoDeJuego){
+    public Nivel(EstadoDeJuego estadoDeJuego, String nombreMapa){
         this.estadoDeJuego = estadoDeJuego;
+        this.mapa = obtienemapa(nombreMapa);
     }
 
 

@@ -17,12 +17,15 @@ public class EstadoDeJuego {
     
     private Jugador jugador;
     private Nivel nivel ;
+    private int numeroNivel = 1;
+    private int niveles = 2;
+    private String archivoNivel = "assets/niveles/nivel-1.txt" ;
     //almacena todos los objetos que heredan de objetodeljuego
     private ArrayList<ObjetoDelJuego> objetos;
     
 
     public EstadoDeJuego(){
-        nivel = new Nivel(this);
+        nivel = new Nivel(this, archivoNivel);
         objetos = new ArrayList<ObjetoDelJuego>();
         //instancio el jugador y le asigno su posicion y el asset a utilizar, en el futuro se debe implementar una animacion
         jugador = new Jugador(new Vector2D(96, 500), Assets.jugadorMario[0], this,Assets.jugadorMario, nivel);
@@ -49,10 +52,27 @@ public class EstadoDeJuego {
             objetos.remove(objetos.get(i));
         }
         //instancio el jugador y le asigno su posicion y el asset a utilizar, en el futuro se debe implementar una animacion
-        nivel = new Nivel(this);
+        nivel = new Nivel(this, archivoNivel);
         objetos = nivel.getLadrillos();
         objetos.add(jugador);
         
+    }
+
+    public void pasarNivel(){
+        if(numeroNivel < niveles){
+            numeroNivel += 1; 
+        }else{
+            numeroNivel = 1;
+        }
+        archivoNivel = "assets/niveles/nivel-"+ numeroNivel +".txt";
+        jugador.setPosicion(new Vector2D(96, 400));
+        for(int i = 0; i < objetos.size(); i++){
+            objetos.remove(objetos.get(i));
+        }
+        //instancio el jugador y le asigno su posicion y el asset a utilizar, en el futuro se debe implementar una animacion
+        nivel = new Nivel(this, archivoNivel);
+        objetos = nivel.getLadrillos();
+        objetos.add(jugador);
     }
 
     public void dibujar(Graphics graficos){

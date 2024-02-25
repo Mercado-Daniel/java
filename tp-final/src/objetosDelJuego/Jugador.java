@@ -35,17 +35,7 @@ public class Jugador extends ObjetoQueSemueve{
     @Override
     public void actualizar(){
         if(Teclado.SALTAR && colisionAbajo() instanceof Ladrillo && !fin){
-            sonidoSaltar.reproducir();
-            if(!cronometro.estaCorriendo()){
-                if(textura == texturaArray[15] || textura == texturaArray[21]){
-                    textura = texturaArray[16];
-                }
-                if(textura == texturaArray[0] || textura == texturaArray [6]){
-                    textura = texturaArray[1];
-                }
-            }
-            cronometro.arranque(100);
-            contador = 0;
+            animacionSaltar();
         }
 
         if(colisionAbajo() instanceof Ladrillo) {
@@ -77,7 +67,7 @@ public class Jugador extends ObjetoQueSemueve{
         }
 
 
-        if(Teclado.DERECHA && !fin){
+        if(Teclado.DERECHA  && !fin){
             //animacion
             
             animacionDerecha();
@@ -183,8 +173,13 @@ public class Jugador extends ObjetoQueSemueve{
            }
 
         if(colisionCentro() instanceof Adornos && fin){
-            vidas = 0;
-            muerte();
+            cronometro.arranque(3000);
+            while(cronometro.estaCorriendo()){
+                cronometro.actualizar();
+            }
+            estadoDeJuego.pasarNivel();
+            chocaInvisible = false;
+            fin = false;
         }
 
         cronometro.actualizar();
@@ -274,6 +269,20 @@ public class Jugador extends ObjetoQueSemueve{
                 textura = texturaArray[15];
             }
         }
+    }
+
+    private void animacionSaltar(){
+        sonidoSaltar.reproducir();
+            if(!cronometro.estaCorriendo()){
+                if(textura == texturaArray[15] || textura == texturaArray[21]){
+                    textura = texturaArray[16];
+                }
+                if(textura == texturaArray[0] || textura == texturaArray [6]){
+                    textura = texturaArray[1];
+                }
+            }
+            cronometro.arranque(100);
+            contador = 0;
     }
 
 }
