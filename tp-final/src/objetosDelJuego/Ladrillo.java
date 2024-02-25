@@ -5,7 +5,6 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import estados.EstadoDeJuego;
-//import graficos.Assets;
 import matematicas.Vector2D;
 
 

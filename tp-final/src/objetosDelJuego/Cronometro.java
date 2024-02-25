@@ -20,6 +20,7 @@ public class Cronometro {
         if(corriendo){
             delta += System.currentTimeMillis() - ultimoTiempo;
         }
+        
         if(delta >= tiempo){
             corriendo = false;
             delta = 0;

@@ -1,7 +1,7 @@
 package nivel;
 
 
-import java.awt.Graphics;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class Nivel {
     private LadrilloDestructible ladrillo;
     private Enemigo enemigo;
     private EstadoDeJuego estadoDeJuego;
-    private int[][] mapa = obtienemapa("assets/niveles/nivel-1.txt.txt");
+    private int[][] mapa = obtienemapa("assets/niveles/nivel-1.txt");
     private Monedas moneda;
     private Adornos adorno;
     private Banderita banderita;
@@ -53,8 +53,11 @@ public class Nivel {
             try {
                 File archivo = new File(nombreArchivo);
                 Scanner scanner = new Scanner(archivo);
+                Scanner  scanner2 = new Scanner(archivo);
+
                 numeroColumnas = 0;
                 numeroColumnas = 0;
+
                 //cuento las filas y columnas
                 while (scanner.hasNextLine()) {
                     numeroFilas++;
@@ -64,14 +67,13 @@ public class Nivel {
                     }
                 }
 
-                scanner = new Scanner(archivo);
 
                 matriz = new int[numeroFilas][numeroColumnas];
 
                 //relleno la matriz
                 int fila = 0;
-                while (scanner.hasNextLine()) {
-                    String[] numeros = scanner.nextLine().split(",");
+                while (scanner2.hasNextLine()) {
+                    String[] numeros = scanner2.nextLine().split(",");
                     for(int columna = 0; columna < numeroColumnas; columna++) {
                         matriz[fila][columna] = Integer.parseInt(numeros[columna]);
                     }
@@ -79,6 +81,7 @@ public class Nivel {
                 }
 
                 scanner.close();
+                scanner2.close();
                 
             } catch (FileNotFoundException e) {
                System.out.println("no se encontro el archivo");
@@ -103,60 +106,77 @@ public class Nivel {
     public ArrayList<ObjetoDelJuego> getLadrillos(){
         for(fila = 0; fila < /*numeroFilas*/mapa.length; fila++){
             for(columna = 0; columna < /*numeroColumnas*/mapa[fila].length; columna++){
-                if(mapa[fila][columna] == 1){
+                
+                switch (mapa[fila][columna]) {
+                    case 1:
                     ladrillo = new LadrilloDestructible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.ladrillo[0], estadoDeJuego);
                     ladrillos.add(ladrillo);
-                    
-                }
-                if(mapa[fila][columna] == 2){
+                    break;
+
+                    case 2:
                     enemigo = new Enemigo(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.enemigo[0], estadoDeJuego, Assets.enemigo, this);
                     ladrillos.add(enemigo);
-                }
-                if(mapa[fila][columna] == 3){
+                    break;
+
+                    case 3:
                     moneda = new Monedas(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.moneda[1], estadoDeJuego, Assets.moneda);
                     ladrillos.add(moneda);
-                }
-                if(mapa[fila][columna] == 4){
+                    break;
+                    
+                    case 4:
                     ladrilloIndestructible = new LadrilloIndestructible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.ladrilloIndestructible, estadoDeJuego);
                     ladrillos.add(ladrilloIndestructible);
-                }
-                if(mapa[fila][columna] == 5){
-                    cajaInvisible = new CajaInvisible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.invisible, estadoDeJuego);
+                    break;
+
+                    case 5:
+                    cajaInvisible = new CajaInvisible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.invisible, estadoDeJuego, "vida");
                     ladrillos.add(cajaInvisible);
-                }
-                if(mapa[fila][columna] == 9){
-                    laCaja = new LaCaja(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.cajaPregunta[0], estadoDeJuego, Assets.cajaPregunta, Assets.cajaVacia);
-                    ladrillos.add(laCaja);
-                }
-                if(mapa[fila][columna] == 10){
-                    ladrilloIndestructible = new LadrilloIndestructible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.canoChico, estadoDeJuego);
-                    ladrillos.add(ladrilloIndestructible);
-                }
-                if(mapa[fila][columna] == 11){
-                    ladrilloIndestructible = new LadrilloIndestructible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.canoMediano, estadoDeJuego);
-                    ladrillos.add(ladrilloIndestructible);
-                }
-                if(mapa[fila][columna] == 12){
-                    ladrilloIndestructible = new LadrilloIndestructible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.canoGrande, estadoDeJuego);
-                    ladrillos.add(ladrilloIndestructible);
-                }
-                if(mapa[fila][columna] == 6){
+                    break;
+
+                    case 6:
                     adorno = new Adornos(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.nube, estadoDeJuego);
                     ladrillos.add(adorno);
-                }
-                if(mapa[fila][columna] == 7){
+                    break;
+
+                    case 7:
                     adorno = new Adornos(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.castillo, estadoDeJuego);
                     ladrillos.add(adorno);
-                }
-                if(mapa[fila][columna] == 8){
+                    break;
+
+                    case 8:
                     adorno = new Adornos(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.colina, estadoDeJuego);
                     ladrillos.add(adorno);
-                }
-                if(mapa[fila][columna] == 15){
+                    break;
+
+                    case 9:
+                    laCaja = new LaCaja(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.cajaPregunta[0], estadoDeJuego, Assets.cajaPregunta, Assets.cajaVacia);
+                    ladrillos.add(laCaja);
+                    break;
+                    
+                    case 10:
+                    ladrilloIndestructible = new LadrilloIndestructible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.canoChico, estadoDeJuego);
+                    ladrillos.add(ladrilloIndestructible);
+                    break;
+
+                    case 11:
+                    ladrilloIndestructible = new LadrilloIndestructible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.canoMediano, estadoDeJuego);
+                    ladrillos.add(ladrilloIndestructible);
+                    break;
+
+                    case 12:
+                    ladrilloIndestructible = new LadrilloIndestructible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.canoGrande, estadoDeJuego);
+                    ladrillos.add(ladrilloIndestructible);
+                    break;
+
+
+                    case 15:
                     banderita = new Banderita(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.poste, estadoDeJuego);
                     ladrillos.add(banderita);
-                }
+                    break;
 
+
+
+                }
                 
                 
             }

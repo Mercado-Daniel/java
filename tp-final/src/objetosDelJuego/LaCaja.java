@@ -21,6 +21,7 @@ public class LaCaja extends Ladrillo{
 
     @Override
     public void actualizar(){
+        
         if(!cronometro.estaCorriendo()){
             if(textura == texturaArray[0]){
                 textura = texturaArray[1];
@@ -34,11 +35,12 @@ public class LaCaja extends Ladrillo{
             if(golpeado){
                 textura = texturaFinal;
             }
+
             cronometro.arranque(100);
         }
         cronometro.actualizar();
     }
-    
+   
 
     public boolean getGolpeado(){
         return golpeado;

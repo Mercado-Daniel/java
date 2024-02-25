@@ -5,13 +5,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-//import java.awt.image.BufferedImage;
+import java.awt.event.*;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
-
-import java.awt.event.*;
 
 import entrada.Teclado;
 import entrada.BotonPausa;
@@ -25,20 +24,15 @@ public class Ventana extends JFrame implements Runnable{
 
     private Canvas lienzo;
     private Thread hilo;
-    private volatile boolean enFuncionamiento = false; //me indica si el hilo esta en funcionamiento o no
     private Teclado teclado;
     private BotonPausa botonPausa;
     private ReproductorSonidos sonidoPausa;
     private ReproductorSonidos sonidoFondo;
     private ReproductorSonidos sonidoMenu;
-
+    private volatile boolean enFuncionamiento ; //me indica si el hilo esta en funcionamiento o no
+    
     //tasa de actualizacion de la pantalla fps
     private double fps = 0;
-    //manipular pixeles
-    /*private BufferedImage imagen = new BufferedImage(
-        Constantes.ANCHO, 
-        Constantes.ALTO, 
-        BufferedImage.TYPE_INT_RGB);*/
 
     //estados
     private EstadoDeJuego estadoDeJuego;
@@ -47,6 +41,7 @@ public class Ventana extends JFrame implements Runnable{
 
 
     public Ventana(){
+
         setTitle(Constantes.NOMBRE);//titulo de la ventana
         setSize(Constantes.ANCHO,Constantes.ALTO);//tamaño de la ventana
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//que sucede al cerrar la ventana
@@ -60,36 +55,7 @@ public class Ventana extends JFrame implements Runnable{
         teclado = new Teclado();
         botonPausa = new BotonPausa();
         lienzo = new Canvas();
-        
-        lienzo.setPreferredSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
-        lienzo.setMaximumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
-        lienzo.setMinimumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
-        lienzo.setFocusable(true);//permite obtener entradas del traclado
-        lienzo.addKeyListener(teclado);//añado el teclado al lienzo
-        lienzo.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE){  
-                 BotonPausa.PAUSA = !BotonPausa.PAUSA; 
-                 botonPausa.botonVisible(BotonPausa.PAUSA); 
-                 sonidoPausa.reproducir();
-            }
-        }
-         });
-
-        
-         lienzo.addKeyListener(new KeyAdapter() {
-          @Override
-             public void keyPressed(KeyEvent e) {
-                         if (e.getKeyCode() == KeyEvent.VK_L) {
-                            sonidoMenu = new ReproductorSonidos("assets/music/menu.wav");
-                            Explicacion ventanaInfo = new Explicacion(sonidoMenu,sonidoFondo);
-                                BotonPausa.PAUSA = !BotonPausa.PAUSA;
-                           sonidoMenu.reproducirInf();
-                           sonidoFondo.detener();
-                          }
-                         }
-                     });
+        lienzoSet();
                      
 
                      
@@ -99,9 +65,46 @@ public class Ventana extends JFrame implements Runnable{
         add(lienzo);//agrego el lienzo a la ventana
     }
 
+
+
+private void lienzoSet(){
+    lienzo.setPreferredSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
+    lienzo.setMaximumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
+    lienzo.setMinimumSize(new Dimension(Constantes.ANCHO, Constantes.ALTO));
+    lienzo.setFocusable(true);//permite obtener entradas del traclado
+    lienzo.addKeyListener(teclado);//añado el teclado al lienzo
+    lienzo.addKeyListener(new KeyAdapter() {
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode() == KeyEvent.VK_ESCAPE){  
+             BotonPausa.PAUSA = !BotonPausa.PAUSA; 
+             botonPausa.botonVisible(BotonPausa.PAUSA); 
+             sonidoPausa.reproducir();
+        }
+    }
+     });
+
+    
+     lienzo.addKeyListener(new KeyAdapter() {
+      @Override
+         public void keyPressed(KeyEvent e) {
+                     if (e.getKeyCode() == KeyEvent.VK_L) {
+                        sonidoMenu = new ReproductorSonidos("assets/music/menu.wav");
+                        Explicacion ventanaInfo = new Explicacion(sonidoMenu,sonidoFondo);
+                            BotonPausa.PAUSA = !BotonPausa.PAUSA;
+                       sonidoMenu.reproducirInf();
+                       sonidoFondo.detener();
+                      }
+                     }
+                 });
+}
+
+
+
+
     public static void main(String[] args){
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+        SwingUtilities.invokeLater(new Runnable(){
+            public void run(){
                 new Ventana().iniciar();
             }
         });
@@ -121,7 +124,7 @@ public class Ventana extends JFrame implements Runnable{
     public synchronized void detener(){
         try{
             enFuncionamiento = false;
-            hilo.join();//interrunpo el hilo dejandolo terminar (stop no deja terminar el hilo nacho)
+            hilo.join();//interrunpo el hilo dejandolo terminar 
         }catch(InterruptedException e){
             e.printStackTrace();
         }
@@ -143,8 +146,6 @@ public class Ventana extends JFrame implements Runnable{
         Graphics graficos = bs.getDrawGraphics();
         //inicia dibujado
        graficos.setColor(Color.CYAN);
-        
-        //graficos.drawImage()
         graficos.fillRect(0, 0, Constantes.ANCHO, Constantes.ALTO);
         
         estadoDeJuego.dibujar(graficos);
@@ -163,7 +164,7 @@ public class Ventana extends JFrame implements Runnable{
         double tiempoTranscurrido;
         double delta = 0;//variacion del tiemp entre fotogramas
       
-        //requestFocus();//para que tome automaticamente el teclado
+       
         iniciarAssetsYEstados();
         
          sonidoFondo.reproducirInf();

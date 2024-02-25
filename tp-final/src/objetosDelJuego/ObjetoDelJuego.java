@@ -7,7 +7,8 @@ import java.awt.image.BufferedImage;
 import estados.EstadoDeJuego;
 import matematicas.Vector2D;
 
-public abstract class ObjetoDelJuego {//es una clase abstracta
+public abstract class ObjetoDelJuego {
+    //es una clase abstracta
     protected BufferedImage textura;
     protected Vector2D posicion;
     protected int ancho;
@@ -25,6 +26,7 @@ public abstract class ObjetoDelJuego {//es una clase abstracta
     }
 
     public abstract void actualizar();
+
     public abstract void dibujar(Graphics graficos);
 
     public Vector2D getPosicion(){
@@ -50,7 +52,8 @@ public abstract class ObjetoDelJuego {//es una clase abstracta
     }
 
     protected void destruir(){
-        estadoDeJuego.getObjetos().remove(this);//destruye este objeto
+        //destruye este objeto
+        estadoDeJuego.getObjetos().remove(this);
     }
 
     protected void Crear(){

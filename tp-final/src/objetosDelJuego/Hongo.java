@@ -51,6 +51,9 @@ public class Hongo extends ObjetoQueSemueve {
             if(tipoHongo == "vida"){
                 estadoDeJuego.getJugador().setVidas();
             }
+            if(tipoHongo == "grande"){
+                
+            }
             destruir();
         }
 

@@ -22,7 +22,9 @@ public class Monedas extends ObjetoDelJuego{
 
     @Override
     public void actualizar(){
+
         if(!cronometro.estaCorriendo()){
+            
             if(textura == texturaArray[0]){
                 textura = texturaArray[1];
             }else if(textura == texturaArray[1]){
