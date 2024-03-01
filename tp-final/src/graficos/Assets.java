@@ -7,6 +7,8 @@ import java.awt.image.BufferedImage;
 public class Assets {
 
     public static BufferedImage[] jugadorMario = new BufferedImage[30];
+    public static BufferedImage[] marioGrande = new BufferedImage[30];
+    public static BufferedImage[] marioFuego = new BufferedImage[30];
     public static BufferedImage[] enemigo = new BufferedImage[4];
     public static BufferedImage[] ladrillo = new BufferedImage[4];
     public static BufferedImage[] cajaPregunta = new BufferedImage[4];
@@ -31,6 +33,8 @@ public class Assets {
     public static void iniciar(){
         try {
             jugadorMario = cargarSpriteDesdeHoja("/imagenes/mario/marioChiquito.gif", 480, 64, 32, 32, 30);
+            marioGrande = cargarSpriteDesdeHoja("/imagenes/mario/marioGrande.png", 480, 128, 32, 64, 30);
+            marioFuego = cargarSpriteDesdeHoja("/imagenes/mario/marioFuego.png", 480, 128, 32, 64, 30);
             ladrillo = cargarSpriteDesdeHoja("/imagenes/bricks/brick.gif", 32, 128, 32, 32, 4);
             enemigo = cargarSpriteDesdeHoja("/imagenes/enemigos/woopa.png", 128, 32, 32, 32, 4);
             moneda = cargarSpriteDesdeHoja("/imagenes/coins/coin3.gif", 32, 128, 32, 32, 4);

@@ -20,7 +20,7 @@ public class Jugador extends ObjetoQueSemueve{
     private int puntaje = 0;
     private int vidas = 5;
     private boolean fin = false;
-    private boolean chocaInvisible = false;
+    private boolean grande = false;
     private ReproductorSonidos sonidoSaltar,sonidoMoneda,sonidoMuerte,sonidoColisionLadrillo;
     
     public Jugador(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
@@ -31,14 +31,26 @@ public class Jugador extends ObjetoQueSemueve{
         sonidoMuerte = new ReproductorSonidos("assets/music/mariodie.wav");
         sonidoColisionLadrillo = new ReproductorSonidos("assets/music/colision.wav");
     }
+
+    public void setTexturas(BufferedImage textura, BufferedImage[] texturaArray){
+        this.textura = textura;
+        this.texturaArray = texturaArray;
+        ancho = textura.getWidth();
+        alto = textura.getHeight();
+        grande = true;
+        posicion.setEjeY(posicion.getEjeY() - 32);
+    }
+    public boolean getGrande(){
+        return grande;
+    }
     
     @Override
     public void actualizar(){
-        if(Teclado.SALTAR && colisionAbajo() instanceof Ladrillo && !fin){
+        if((Teclado.SALTAR && colisionAbajo() instanceof Ladrillo || colisionAbajo() instanceof CajaInvisible) && !fin){
             animacionSaltar();
         }
 
-        if(colisionAbajo() instanceof Ladrillo) {
+        if(colisionAbajo() instanceof Ladrillo || colisionAbajo() instanceof CajaInvisible) {
             setCaida(0);
             
         }else{
@@ -49,16 +61,18 @@ public class Jugador extends ObjetoQueSemueve{
             posicion.setEjeY(posicion.getEjeY() - 4);
             contador++;
             if(colisionArriba() instanceof Ladrillo){
-                if(colisionArriba() instanceof LaCaja ){
+                if(colisionArriba() instanceof LadrilloDestructible && grande){
+                    colisionArriba().destruir();
+                    puntaje += 5;
+                }else if(colisionArriba() instanceof LaCaja ){
                     chocaCaja();
-                }
-                if(colisionArriba() instanceof CajaInvisible && !chocaInvisible){
-                    chocaInvisible = true;
-                    chocaInvisible();
                 }
                 posicion.setEjeY(posicion.getEjeY() + caida);
                
-                if (colisionDerecha() instanceof Ladrillo || colisionIzquierda() instanceof Ladrillo) {
+                if (colisionDerecha() instanceof Ladrillo || 
+                    colisionIzquierda() instanceof Ladrillo ||
+                    colisionDerecha() instanceof CajaInvisible || 
+                    colisionIzquierda() instanceof CajaInvisible) {
                     posicion.setEjeX(posicion.getEjeX());
                 }
             }
@@ -135,6 +149,9 @@ public class Jugador extends ObjetoQueSemueve{
             sonidoMoneda.reproducir();
             colisionGeneral().destruir();
             monedas += 1;
+            if(monedas == 100){
+                vidas += 1;
+            }
         }
 
         if(colisionAbajo() instanceof Enemigo){
@@ -178,7 +195,6 @@ public class Jugador extends ObjetoQueSemueve{
                 cronometro.actualizar();
             }
             estadoDeJuego.pasarNivel();
-            chocaInvisible = false;
             fin = false;
         }
 
@@ -200,19 +216,7 @@ public class Jugador extends ObjetoQueSemueve{
         monedas += 1;
     }
 
-    private void chocaInvisible(){
-        Hongo hongo = new Hongo(
-        new Vector2D(
-            colisionArriba().posicion.getEjeX(), 
-            colisionArriba().posicion.getEjeY() - 32),
-        Assets.hongoVida, 
-        estadoDeJuego,
-        nivel,
-        "vida");
-        hongo.Crear();
-        //colisionArriba().destruir();
-        
-    }
+    
 
     public int getPuntaje(){
         return puntaje;
@@ -231,20 +235,24 @@ public class Jugador extends ObjetoQueSemueve{
     }
 
     private void muerte(){
-        sonidoMuerte.reproducir();
-        cronometro.arranque(3000);
-        chocaInvisible = false;
-        while(cronometro.estaCorriendo()){
-            cronometro.actualizar();
-        }
-
-        if(vidas > 0){
-            vidas -= 1;
-            estadoDeJuego.reiniciar();
+        if(grande){
+            setTexturas(Assets.jugadorMario[0], Assets.jugadorMario);
+            grande = false;
         }else{
-            destruir();
-            estadoDeJuego.reiniciar();
-        } 
+            sonidoMuerte.reproducir();
+            cronometro.arranque(3000);
+            while(cronometro.estaCorriendo()){
+                cronometro.actualizar();
+            }
+    
+            if(vidas > 0){
+                vidas -= 1;
+                estadoDeJuego.reiniciar();
+            }else{
+                destruir();
+                estadoDeJuego.reiniciar();
+            } 
+        }
 
     }
 

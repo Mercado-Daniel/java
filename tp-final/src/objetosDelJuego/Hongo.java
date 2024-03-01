@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import estados.EstadoDeJuego;
+import graficos.Assets;
 import matematicas.Vector2D;
 import nivel.Nivel;
 
@@ -21,14 +22,14 @@ public class Hongo extends ObjetoQueSemueve {
     @Override
     public void actualizar() {
         posicion.setEjeY(posicion.getEjeY() + caida);
-        if(colisionAbajo() instanceof Ladrillo){
+        if(colisionAbajo() instanceof Ladrillo || colisionAbajo() instanceof CajaInvisible){
             setCaida(0);
         }else{
             setCaida(Constantes.GRAVEDAD);
         }
 
         posicion.setEjeX(posicion.getEjeX() + movimiento * velocidad);
-        if(colisionIzquierda() instanceof Ladrillo){
+        if(colisionIzquierda() instanceof Ladrillo ){
             if(!(colisionAbajo() instanceof Ladrillo)){
                 movimiento = 0;
             }else{
@@ -52,7 +53,7 @@ public class Hongo extends ObjetoQueSemueve {
                 estadoDeJuego.getJugador().setVidas();
             }
             if(tipoHongo == "grande"){
-                
+                estadoDeJuego.getJugador().setTexturas(Assets.marioGrande[0], Assets.marioGrande);
             }
             destruir();
         }

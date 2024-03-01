@@ -130,7 +130,7 @@ public class Nivel {
                     break;
 
                     case 5:
-                    cajaInvisible = new CajaInvisible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.invisible, estadoDeJuego, "vida");
+                    cajaInvisible = new CajaInvisible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.invisible, estadoDeJuego, this, "vida");
                     ladrillos.add(cajaInvisible);
                     break;
 
@@ -175,6 +175,10 @@ public class Nivel {
                     ladrillos.add(banderita);
                     break;
 
+                    case 16:
+                    cajaInvisible = new CajaInvisible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.cajaPregunta[0], estadoDeJuego, this, "grande");
+                    ladrillos.add(cajaInvisible);
+                    break;
 
 
                 }
