@@ -176,7 +176,7 @@ public class Nivel {
                     break;
 
                     case 16:
-                    cajaInvisible = new CajaInvisible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.cajaPregunta[0], estadoDeJuego, this, "grande");
+                    cajaInvisible = new CajaInvisible(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.ladrillo[0], estadoDeJuego, this, "grande");
                     ladrillos.add(cajaInvisible);
                     break;
 

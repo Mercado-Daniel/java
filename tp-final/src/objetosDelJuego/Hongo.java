@@ -67,3 +67,4 @@ public class Hongo extends ObjetoQueSemueve {
         graficos.drawImage(textura, (int)posicion.getEjeX(), (int)posicion.getEjeY(), null);//convierto la posicion a entero
     }
 }
+

@@ -13,12 +13,14 @@ import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
 import entrada.Teclado;
+import entrada.BotonExit;
 import entrada.BotonPausa;
+import entrada.BotonReiniciar;
 import estados.EstadoDeJuego;
 import objetosDelJuego.Constantes;
-import objetosDelJuego.Explicacion;
 import graficos.Assets;
 import sonidos.ReproductorSonidos;
+
 
 public class Ventana extends JFrame implements Runnable{
 
@@ -26,9 +28,10 @@ public class Ventana extends JFrame implements Runnable{
     private Thread hilo;
     private Teclado teclado;
     private BotonPausa botonPausa;
+    private BotonReiniciar botonReiniciar;
+    private BotonExit botonExit;
     private ReproductorSonidos sonidoPausa;
     private ReproductorSonidos sonidoFondo;
-    private ReproductorSonidos sonidoMenu;
     private volatile boolean enFuncionamiento ; //me indica si el hilo esta en funcionamiento o no
     
     //tasa de actualizacion de la pantalla fps
@@ -53,15 +56,21 @@ public class Ventana extends JFrame implements Runnable{
         sonidoFondo = new ReproductorSonidos("assets/music/fondo2.wav");
         sonidoPausa = new ReproductorSonidos("assets/music/pause.wav");
         teclado = new Teclado();
-        botonPausa = new BotonPausa();
+        botonReiniciar = new BotonReiniciar();
+        botonExit = new BotonExit();
+        botonPausa = new BotonPausa(botonReiniciar ,botonExit);
         lienzo = new Canvas();
         lienzoSet();
                      
 
                      
-        botonPausa.botonVisible(BotonPausa.PAUSA);
+        botonPausa.botonVisiblePause(BotonPausa.PAUSA);
+        botonReiniciar.botonVisibleReiniciar(BotonPausa.PAUSA);
+        botonExit.botonVisibleExit(BotonPausa.PAUSA);
 
         add(botonPausa.getBoton()); 
+        add(botonReiniciar.getBotonReiniciar());
+        add(botonExit.getBotonExit());
         add(lienzo);//agrego el lienzo a la ventana
     }
 
@@ -78,25 +87,16 @@ private void lienzoSet(){
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_ESCAPE){  
              BotonPausa.PAUSA = !BotonPausa.PAUSA; 
-             botonPausa.botonVisible(BotonPausa.PAUSA); 
+             botonPausa.botonVisiblePause(BotonPausa.PAUSA); 
+             botonReiniciar.botonVisibleReiniciar(BotonPausa.PAUSA);
+             botonExit.botonVisibleExit(BotonPausa.PAUSA);
              sonidoPausa.reproducir();
         }
     }
      });
 
     
-     lienzo.addKeyListener(new KeyAdapter() {
-      @Override
-         public void keyPressed(KeyEvent e) {
-                     if (e.getKeyCode() == KeyEvent.VK_L) {
-                        sonidoMenu = new ReproductorSonidos("assets/music/menu.wav");
-                        Explicacion ventanaInfo = new Explicacion(sonidoMenu,sonidoFondo);
-                            BotonPausa.PAUSA = !BotonPausa.PAUSA;
-                       sonidoMenu.reproducirInf();
-                       sonidoFondo.detener();
-                      }
-                     }
-                 });
+     
 }
 
 
@@ -119,6 +119,7 @@ private void lienzoSet(){
     public void iniciarAssetsYEstados(){
         Assets.iniciar();
         estadoDeJuego = new EstadoDeJuego();
+        
     }
 
     public synchronized void detener(){
@@ -167,7 +168,10 @@ private void lienzoSet(){
        
         iniciarAssetsYEstados();
         
-         sonidoFondo.reproducirInf();
+
+        botonReiniciar.reiniciarLevel(estadoDeJuego , botonPausa ,botonExit);
+        sonidoFondo.reproducirInf();
+    
         while(enFuncionamiento){
             
             if(!BotonPausa.PAUSA){

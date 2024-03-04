@@ -11,6 +11,7 @@ import nivel.Nivel;
 public class CajaInvisible extends ObjetoQueSemueve {
     private String contenido;
     private boolean chocado = false;
+    private Assets aset = new Assets();
 
     public CajaInvisible(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, Nivel nivel, String contenido){
         super(posicion, textura,estadoDeJuego, null, nivel);
@@ -52,3 +53,4 @@ public class CajaInvisible extends ObjetoQueSemueve {
     }
     
 }
+

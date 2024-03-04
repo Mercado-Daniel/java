@@ -1,31 +1,51 @@
 package entrada;
 
-
-import java.awt.Image;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
+import javax.swing.JButton;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class BotonPausa   {
-    JLabel boton ;
-    ImageIcon imagen, imagenTamano;
+    JButton boton ;
     public static boolean PAUSA ;
+    BotonReiniciar reiniciar ;
+     BotonExit exit;
 
-    public BotonPausa(){ 
-        boton = new JLabel();
-        imagen = new ImageIcon("assets/imagenes/boton/btnpausa2.gif");
-        imagenTamano=new ImageIcon(imagen.getImage().getScaledInstance(100, 50, Image.SCALE_SMOOTH));
-        boton.setIcon(imagenTamano);
+    public BotonPausa(BotonReiniciar reiniciar , BotonExit exit){ 
+        this.reiniciar = reiniciar;
+        this.exit = exit;
+        boton = new JButton("Pause");
+        boton.setForeground(Color.WHITE); // Color del texto
+        boton.setBackground(Color.BLUE); // Color de fondo
+        boton.setFont(new Font("Arial", Font.BOLD, 16));
         boton.setBounds(370, 150, 100, 50);
-       
+        updatePause();  
      
     }
+
     
-    public void botonVisible(boolean b){
+    private void updatePause() {
+        boton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            PAUSA =!PAUSA;
+            botonVisiblePause(PAUSA);
+            reiniciar.botonVisibleReiniciar(PAUSA);
+            exit.botonVisibleExit(PAUSA);    
+            }
+        });
+    }
+
+
+    public void botonVisiblePause(boolean b){
         boton.setVisible(b);
+        
+     
     }
    
-    public JLabel getBoton(){
+    public JButton getBoton(){
         return boton;
     }
 }

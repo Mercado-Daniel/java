@@ -26,7 +26,7 @@ public class Banderita extends ObjetoDelJuego{
 
     @Override
     public Rectangle rectangulito(){
-        return new Rectangle((int)posicion.getEjeX() + (ancho/2), (int)posicion.getEjeY() -32, ancho/4 , alto);
+        return new Rectangle((int)posicion.getEjeX() + (ancho/2), (int)posicion.getEjeY() -32, ancho/4 , alto - 32);
     }
 
     

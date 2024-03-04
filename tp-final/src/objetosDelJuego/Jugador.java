@@ -20,8 +20,9 @@ public class Jugador extends ObjetoQueSemueve{
     private int puntaje = 0;
     private int vidas = 5;
     private boolean fin = false;
+    private boolean chocaInvisible = false;
     private boolean grande = false;
-    private ReproductorSonidos sonidoSaltar,sonidoMoneda,sonidoMuerte,sonidoColisionLadrillo;
+    private ReproductorSonidos sonidoGameOver,sonidoFinLevel,sonidoSaltar,sonidoMoneda,sonidoMuerte,sonidoColisionLadrillo,sonidoDownFlag;
     
     public Jugador(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
         super(posicion, textura, estadoDeJuego, texturaArray, nivel);
@@ -30,6 +31,9 @@ public class Jugador extends ObjetoQueSemueve{
         sonidoMoneda = new ReproductorSonidos("assets/music/coin.wav");
         sonidoMuerte = new ReproductorSonidos("assets/music/mariodie.wav");
         sonidoColisionLadrillo = new ReproductorSonidos("assets/music/colision.wav");
+        sonidoDownFlag = new ReproductorSonidos("assets/music/downFlag.wav");
+        sonidoFinLevel = new ReproductorSonidos("assets/music/menu.wav");
+        sonidoGameOver =new ReproductorSonidos("assets/music/gameover.wav");
     }
 
     public void setTexturas(BufferedImage textura, BufferedImage[] texturaArray){
@@ -150,6 +154,7 @@ public class Jugador extends ObjetoQueSemueve{
             colisionGeneral().destruir();
             monedas += 1;
             if(monedas == 100){
+                monedas = 0;
                 vidas += 1;
             }
         }
@@ -171,9 +176,14 @@ public class Jugador extends ObjetoQueSemueve{
         }
 
         if(colisionCentro() instanceof Banderita){
-
-            cronometro.arranque(100);
-
+           
+           
+            
+            if(fin == false){
+                sonidoDownFlag.reproducir();
+                sonidoFinLevel.reproducirInf();
+            }
+          
             while(cronometro.estaCorriendo()){
                 textura = texturaArray[10];
                 cronometro.actualizar();
@@ -182,25 +192,31 @@ public class Jugador extends ObjetoQueSemueve{
            fin = true;
             
         }
+       
 
+            
+        
         if(colisionAbajo() instanceof Ladrillo && fin){
             animacionDerecha();
             cronometro.arranque(100);
             posicion.setEjeX(posicion.getEjeX() + derecha);
-           }
-
+            
+        }
+        
         if(colisionCentro() instanceof Adornos && fin){
             cronometro.arranque(3000);
             while(cronometro.estaCorriendo()){
                 cronometro.actualizar();
             }
             estadoDeJuego.pasarNivel();
+            sonidoFinLevel.detener();
+            chocaInvisible = false;
             fin = false;
         }
 
         cronometro.actualizar();
 
-        // System.out.println(monedas);
+        
     }
 
     @Override
@@ -215,8 +231,6 @@ public class Jugador extends ObjetoQueSemueve{
         colisionArriba().destruir();
         monedas += 1;
     }
-
-    
 
     public int getPuntaje(){
         return puntaje;
@@ -234,27 +248,37 @@ public class Jugador extends ObjetoQueSemueve{
         vidas += 1;
     }
 
-    private void muerte(){
-        if(grande){
-            setTexturas(Assets.jugadorMario[0], Assets.jugadorMario);
-            grande = false;
-        }else{
-            sonidoMuerte.reproducir();
-            cronometro.arranque(3000);
-            while(cronometro.estaCorriendo()){
-                cronometro.actualizar();
-            }
-    
-            if(vidas > 0){
-                vidas -= 1;
-                estadoDeJuego.reiniciar();
-            }else{
-                destruir();
-                estadoDeJuego.reiniciar();
-            } 
+   public void setMonedas(){
+    monedas = 0;
+   }
+   public void setPuntos(){
+    puntaje = 0;
+   }
+public void setVidas5(){
+    vidas =5;
+}
+
+private void muerte(){
+    if(grande){
+        setTexturas(Assets.jugadorMario[0], Assets.jugadorMario);
+        grande = false;
+    }else{
+        sonidoMuerte.reproducir();
+        cronometro.arranque(3000);
+        while(cronometro.estaCorriendo()){
+            cronometro.actualizar();
         }
 
+        if(vidas > 0){
+            vidas -= 1;
+            estadoDeJuego.reiniciar();
+        }else{
+            destruir();
+            estadoDeJuego.reiniciar();
+        } 
     }
+
+}
 
     private void animacionDerecha(){
 
@@ -292,5 +316,9 @@ public class Jugador extends ObjetoQueSemueve{
             cronometro.arranque(100);
             contador = 0;
     }
+
+//    public void detenerSonido(ReproductorSonidos sonido){
+//         sonido.detener();
+//     }
 
 }

@@ -29,6 +29,8 @@ public class Cronometro {
         ultimoTiempo = System.currentTimeMillis();
     }
 
+  
+
     public boolean estaCorriendo(){
         return corriendo;
     }
