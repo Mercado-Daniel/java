@@ -31,7 +31,6 @@ public class Ventana extends JFrame implements Runnable{
     private BotonReiniciar botonReiniciar;
     private BotonExit botonExit;
     private ReproductorSonidos sonidoPausa;
-    private ReproductorSonidos sonidoFondo;
     private volatile boolean enFuncionamiento ; //me indica si el hilo esta en funcionamiento o no
     
     //tasa de actualizacion de la pantalla fps
@@ -53,7 +52,7 @@ public class Ventana extends JFrame implements Runnable{
         setLocationRelativeTo(null);//para centrar la ventana en la pantalla
         setVisible(true);//muestro la ventana
 
-        sonidoFondo = new ReproductorSonidos("assets/music/fondo2.wav");
+        
         sonidoPausa = new ReproductorSonidos("assets/music/pause.wav");
         teclado = new Teclado();
         botonReiniciar = new BotonReiniciar();
@@ -167,10 +166,10 @@ private void lienzoSet(){
       
        
         iniciarAssetsYEstados();
-        
+        estadoDeJuego.pasarNivel();
 
         botonReiniciar.reiniciarLevel(estadoDeJuego , botonPausa ,botonExit);
-        sonidoFondo.reproducirInf();
+       
        
         while(enFuncionamiento){
             

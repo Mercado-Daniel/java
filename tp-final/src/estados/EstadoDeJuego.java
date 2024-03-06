@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import graficos.Assets;
 import matematicas.Vector2D;
 import nivel.Nivel;
-
+import sonidos.ReproductorSonidos;
 import objetosDelJuego.Jugador;
 import objetosDelJuego.ObjetoDelJuego;
 
@@ -22,7 +22,8 @@ public class EstadoDeJuego {
     private String archivoNivel = "assets/niveles/nivel-1.txt" ;
     //almacena todos los objetos que heredan de objetodeljuego
     private ArrayList<ObjetoDelJuego> objetos;
-  
+    private ReproductorSonidos sonidoFondo1;
+    private ReproductorSonidos sonidoFondo2;
     
 
     public EstadoDeJuego(){
@@ -32,7 +33,8 @@ public class EstadoDeJuego {
         jugador = new Jugador(new Vector2D(96, 500), Assets.jugadorMario[0], this,Assets.jugadorMario, nivel);
         objetos = nivel.getLadrillos();
         objetos.add(jugador);
-     
+        sonidoFondo1 = new ReproductorSonidos("assets/music/fondo.wav");
+        sonidoFondo2 = new ReproductorSonidos("assets/music/jujutsumetal.wav");
     }
 
     public void actualizar(){
@@ -61,6 +63,21 @@ public class EstadoDeJuego {
     }
 
     public void pasarNivel(){
+        archivoNivel = "assets/niveles/nivel-"+ numeroNivel +".txt";
+        
+        switch (numeroNivel) {
+            case 1:
+            sonidoFondo1.reproducirInf();
+            sonidoFondo2.detener();
+                break;
+        
+            case 2:
+            sonidoFondo1.detener();
+            sonidoFondo2.reproducirInf();
+
+                break;
+        }
+
         if(numeroNivel < niveles){
             numeroNivel += 1; 
             
@@ -68,8 +85,8 @@ public class EstadoDeJuego {
             numeroNivel = 1;
           
         }
-        archivoNivel = "assets/niveles/nivel-"+ numeroNivel +".txt";
-    
+
+       
        
         jugador.setPosicion(new Vector2D(96, 400));
         for(int i = 0; i < objetos.size(); i++){
@@ -80,7 +97,7 @@ public class EstadoDeJuego {
         objetos = nivel.getLadrillos();
         objetos.add(jugador);
     }
- 
+    
      
 
    
