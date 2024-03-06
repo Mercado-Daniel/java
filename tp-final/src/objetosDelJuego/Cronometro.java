@@ -15,7 +15,10 @@ public class Cronometro {
         corriendo = true;
         this.tiempo = tiempo;
     }
-
+    public int getTime(){
+       
+        return (int) tiempo ;
+    }
     public void actualizar(){
         if(corriendo){
             delta += System.currentTimeMillis() - ultimoTiempo;

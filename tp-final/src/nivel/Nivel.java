@@ -15,6 +15,7 @@ import objetosDelJuego.Banderita;
 import objetosDelJuego.CajaInvisible;
 import objetosDelJuego.Constantes;
 import objetosDelJuego.Enemigo;
+import objetosDelJuego.Enemigos2;
 import objetosDelJuego.LaCaja;
 import objetosDelJuego.LadrilloDestructible;
 import objetosDelJuego.LadrilloIndestructible;
@@ -29,6 +30,7 @@ public class Nivel {
     private int numeroColumnas = 0; //= 208;
     private LadrilloDestructible ladrillo;
     private Enemigo enemigo;
+    private Enemigos2 enemigo2;
     private EstadoDeJuego estadoDeJuego;
     private int[][] mapa;// = obtienemapa("assets/niveles/nivel-1.txt");
     private Monedas moneda;
@@ -180,7 +182,10 @@ public class Nivel {
                     ladrillos.add(cajaInvisible);
                     break;
 
-
+                    case 17:
+                    enemigo2 = new Enemigos2(new Vector2D(columna*Constantes.ANCHO_TILE, fila*Constantes.ALTO_TILE), Assets.enemigo2[0], estadoDeJuego, Assets.enemigo2, this);
+                    ladrillos.add(enemigo2);
+                    break;
                 }
                 
                 

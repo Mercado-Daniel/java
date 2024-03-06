@@ -10,6 +10,7 @@ public class Assets {
     public static BufferedImage[] marioGrande = new BufferedImage[30];
     public static BufferedImage[] marioFuego = new BufferedImage[30];
     public static BufferedImage[] enemigo = new BufferedImage[4];
+    public static BufferedImage[] enemigo2 = new BufferedImage[4];
     public static BufferedImage[] ladrillo = new BufferedImage[4];
     public static BufferedImage[] cajaPregunta = new BufferedImage[4];
     public static BufferedImage[] moneda = new BufferedImage[4];
@@ -37,6 +38,7 @@ public class Assets {
             marioFuego = cargarSpriteDesdeHoja("/imagenes/mario/marioFuego.png", 480, 128, 32, 64, 30);
             ladrillo = cargarSpriteDesdeHoja("/imagenes/bricks/brick.gif", 32, 128, 32, 32, 4);
             enemigo = cargarSpriteDesdeHoja("/imagenes/enemigos/woopa.png", 128, 32, 32, 32, 4);
+            enemigo2 = cargarSpriteDesdeHoja("/imagenes/enemigos/hongoenemis.png", 192, 48, 48, 48, 4);
             moneda = cargarSpriteDesdeHoja("/imagenes/coins/coin3.gif", 32, 128, 32, 32, 4);
             cajaPregunta = cargarSpriteDesdeHoja("/imagenes/boxes/surpriseBox.gif", 32, 128, 32, 32, 4);
             banderita = cargarSpriteDesdeHoja("/imagenes/tiles/banderita.png", 361, 374, 72, 374, 5);

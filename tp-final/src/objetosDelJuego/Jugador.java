@@ -160,13 +160,17 @@ public class Jugador extends ObjetoQueSemueve{
             }
         }
 
-        if(colisionAbajo() instanceof Enemigo){
+        if(colisionAbajo() instanceof Enemigo ||colisionAbajo() instanceof Enemigos2 ){
             puntaje += 10;
         }
 
         if(colisionDerecha() instanceof Enemigo || colisionArriba() instanceof Enemigo || colisionIzquierda() instanceof Enemigo || colisionCentro() instanceof Enemigo){
            muerte();
         }
+
+        if(colisionDerecha() instanceof Enemigos2 || colisionArriba() instanceof Enemigos2 || colisionIzquierda() instanceof Enemigos2 || colisionCentro() instanceof Enemigos2){
+            muerte();
+         }
 
         if(posicion.getEjeY() >= Constantes.ALTO - 64){
             muerte();
