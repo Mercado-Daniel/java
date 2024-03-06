@@ -171,7 +171,7 @@ private void lienzoSet(){
 
         botonReiniciar.reiniciarLevel(estadoDeJuego , botonPausa ,botonExit);
         sonidoFondo.reproducirInf();
-    
+       
         while(enFuncionamiento){
             
             if(!BotonPausa.PAUSA){

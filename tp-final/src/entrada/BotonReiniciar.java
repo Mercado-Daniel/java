@@ -7,11 +7,12 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import estados.EstadoDeJuego;
+import graficos.Assets;
 
 
 public class BotonReiniciar   {
-    JButton boton ;
-    EstadoDeJuego estado;
+    private JButton boton ;
+    
     
 
     public BotonReiniciar(){ 
@@ -36,6 +37,8 @@ public class BotonReiniciar   {
                 estado.getJugador().setMonedas();
                 estado.getJugador().setPuntos();
                 estado.getJugador().setVidas5();
+                estado.getJugador().setTexturas(Assets.jugadorMario[0] , Assets.jugadorMario);
+                estado.getJugador().grande = false;
                 estado.reiniciar();
                         
             }

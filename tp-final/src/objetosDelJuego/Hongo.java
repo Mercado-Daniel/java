@@ -7,16 +7,20 @@ import estados.EstadoDeJuego;
 import graficos.Assets;
 import matematicas.Vector2D;
 import nivel.Nivel;
+import sonidos.ReproductorSonidos;
 
 public class Hongo extends ObjetoQueSemueve {
     private int movimiento; 
     private int velocidad;
     private String tipoHongo;
+    private ReproductorSonidos sonidoup1,sonidoDestruirCaja;
     public Hongo(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, Nivel nivel, String tipoHongo){
         super(posicion, textura, estadoDeJuego, null, nivel);
         movimiento = derecha;
         velocidad = 1;
         this.tipoHongo = tipoHongo;
+        sonidoup1 = new ReproductorSonidos("assets/music/1-up.wav");
+        sonidoDestruirCaja = new ReproductorSonidos("assets/music/crecer.wav");
     }
 
     @Override
@@ -51,9 +55,12 @@ public class Hongo extends ObjetoQueSemueve {
             colisionIzquierda() instanceof Jugador){
             if(tipoHongo == "vida"){
                 estadoDeJuego.getJugador().setVidas();
+                sonidoup1.reproducir();
+
             }
             if(tipoHongo == "grande"){
                 estadoDeJuego.getJugador().setTexturas(Assets.marioGrande[0], Assets.marioGrande);
+                sonidoDestruirCaja.reproducir();
             }
             destruir();
         }

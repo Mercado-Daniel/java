@@ -8,9 +8,7 @@ public class Constantes {
     public final static int ANCHO = 800;
     public final static int ALTO = 600;
 
-    //tamaño pantalla emergente de explicacion
-    public final static int ANCHO_EXPLICACION = 400;
-    public final static int ALTO_EXPLICACION = 300;
+
 
     //establecer fps
     public final static int NANOSEGUNDOS_POR_SEGUNDO = 1000000000;

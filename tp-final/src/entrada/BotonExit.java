@@ -7,7 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class BotonExit {
-     JButton boton ;
+    private JButton boton ;
     
 
     public BotonExit(){ 

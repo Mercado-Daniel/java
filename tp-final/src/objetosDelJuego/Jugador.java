@@ -20,10 +20,10 @@ public class Jugador extends ObjetoQueSemueve{
     private int puntaje = 0;
     private int vidas = 5;
     private boolean fin = false;
-    private boolean chocaInvisible = false;
-    private boolean grande = false;
-    private ReproductorSonidos sonidoGameOver,sonidoFinLevel,sonidoSaltar,sonidoMoneda,sonidoMuerte,sonidoColisionLadrillo,sonidoDownFlag;
+    private ReproductorSonidos sonidoRomperLadrillo,sonidoFinLevel,sonidoSaltar,sonidoMoneda,sonidoMuerte,sonidoColisionLadrillo,sonidoDownFlag;
+    public boolean grande = false;
     
+
     public Jugador(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
         super(posicion, textura, estadoDeJuego, texturaArray, nivel);
         velocidad = 2;
@@ -32,8 +32,8 @@ public class Jugador extends ObjetoQueSemueve{
         sonidoMuerte = new ReproductorSonidos("assets/music/mariodie.wav");
         sonidoColisionLadrillo = new ReproductorSonidos("assets/music/colision.wav");
         sonidoDownFlag = new ReproductorSonidos("assets/music/downFlag.wav");
-        sonidoFinLevel = new ReproductorSonidos("assets/music/menu.wav");
-        sonidoGameOver =new ReproductorSonidos("assets/music/gameover.wav");
+        sonidoFinLevel = new ReproductorSonidos("assets/music/festejo.wav");
+        sonidoRomperLadrillo =new ReproductorSonidos("assets/music/breakblock.wav");
     }
 
     public void setTexturas(BufferedImage textura, BufferedImage[] texturaArray){
@@ -66,6 +66,7 @@ public class Jugador extends ObjetoQueSemueve{
             contador++;
             if(colisionArriba() instanceof Ladrillo){
                 if(colisionArriba() instanceof LadrilloDestructible && grande){
+                    sonidoRomperLadrillo.reproducir();
                     colisionArriba().destruir();
                     puntaje += 5;
                 }else if(colisionArriba() instanceof LaCaja ){
@@ -204,13 +205,13 @@ public class Jugador extends ObjetoQueSemueve{
         }
         
         if(colisionCentro() instanceof Adornos && fin){
-            cronometro.arranque(3000);
+            cronometro.arranque(500);
             while(cronometro.estaCorriendo()){
                 cronometro.actualizar();
             }
             estadoDeJuego.pasarNivel();
             sonidoFinLevel.detener();
-            chocaInvisible = false;
+           
             fin = false;
         }
 
@@ -264,7 +265,7 @@ private void muerte(){
         grande = false;
     }else{
         sonidoMuerte.reproducir();
-        cronometro.arranque(3000);
+        cronometro.arranque(1000);
         while(cronometro.estaCorriendo()){
             cronometro.actualizar();
         }
@@ -316,9 +317,5 @@ private void muerte(){
             cronometro.arranque(100);
             contador = 0;
     }
-
-//    public void detenerSonido(ReproductorSonidos sonido){
-//         sonido.detener();
-//     }
 
 }

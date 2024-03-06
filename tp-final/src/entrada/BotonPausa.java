@@ -8,10 +8,10 @@ import java.awt.event.ActionListener;
 
 
 public class BotonPausa   {
-    JButton boton ;
+    private JButton boton ;
     public static boolean PAUSA ;
-    BotonReiniciar reiniciar ;
-     BotonExit exit;
+    private BotonReiniciar reiniciar ;
+    private BotonExit exit;
 
     public BotonPausa(BotonReiniciar reiniciar , BotonExit exit){ 
         this.reiniciar = reiniciar;

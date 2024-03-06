@@ -22,7 +22,6 @@ public class Teclado implements KeyListener  {
         IZQUIERDA = teclas[KeyEvent.VK_A];
         DERECHA = teclas[KeyEvent.VK_D];
         SALTAR = teclas[KeyEvent.VK_SPACE];
-        //ATACAR = teclas[KeyEvent.VK_J];
         CORRER = teclas[KeyEvent.VK_SHIFT]; 
 
     }

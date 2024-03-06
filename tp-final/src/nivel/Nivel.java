@@ -57,7 +57,7 @@ public class Nivel {
                 Scanner  scanner2 = new Scanner(archivo);
 
                 numeroColumnas = 0;
-                numeroColumnas = 0;
+                
 
                 //cuento las filas y columnas
                 while (scanner.hasNextLine()) {

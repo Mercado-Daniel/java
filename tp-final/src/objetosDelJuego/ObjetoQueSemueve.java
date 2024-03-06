@@ -13,9 +13,9 @@ public abstract class ObjetoQueSemueve extends ObjetoDelJuego {
     protected BufferedImage[] texturaArray;
     protected Cronometro cronometro;
     protected Nivel nivel;
+    protected int izquierda;
+    protected int derecha;
     private ArrayList<ObjetoDelJuego> objetos;
-    int izquierda;
-    int derecha;
     public int velocidad;
     
     public ObjetoQueSemueve(Vector2D posicion, BufferedImage textura, EstadoDeJuego estadoDeJuego, BufferedImage[] texturaArray, Nivel nivel){
@@ -130,13 +130,7 @@ public abstract class ObjetoQueSemueve extends ObjetoDelJuego {
         return null;
     }
 
-    public boolean importa(ObjetoDelJuego a , ObjetoDelJuego b){
-        if(a instanceof Enemigo && b instanceof Enemigo){
-            return false;
-        }
-        
-        return true;
-    }
+   
 
 
     public ObjetoDelJuego colisionGeneral(){

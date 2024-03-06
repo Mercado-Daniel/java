@@ -22,6 +22,7 @@ public class EstadoDeJuego {
     private String archivoNivel = "assets/niveles/nivel-1.txt" ;
     //almacena todos los objetos que heredan de objetodeljuego
     private ArrayList<ObjetoDelJuego> objetos;
+  
     
 
     public EstadoDeJuego(){
@@ -31,15 +32,16 @@ public class EstadoDeJuego {
         jugador = new Jugador(new Vector2D(96, 500), Assets.jugadorMario[0], this,Assets.jugadorMario, nivel);
         objetos = nivel.getLadrillos();
         objetos.add(jugador);
-       
+     
     }
 
     public void actualizar(){
         for(int i = 0; i < objetos.size(); i++){
             objetos.get(i).actualizar();
         }
-        //System.out.println(colision());
+      
     }
+    
 
     public void reiniciar(){
        
@@ -61,10 +63,14 @@ public class EstadoDeJuego {
     public void pasarNivel(){
         if(numeroNivel < niveles){
             numeroNivel += 1; 
+            
         }else{
             numeroNivel = 1;
+          
         }
         archivoNivel = "assets/niveles/nivel-"+ numeroNivel +".txt";
+    
+       
         jugador.setPosicion(new Vector2D(96, 400));
         for(int i = 0; i < objetos.size(); i++){
             objetos.remove(objetos.get(i));
@@ -74,6 +80,10 @@ public class EstadoDeJuego {
         objetos = nivel.getLadrillos();
         objetos.add(jugador);
     }
+ 
+     
+
+   
 
     public void dibujar(Graphics graficos){
         
